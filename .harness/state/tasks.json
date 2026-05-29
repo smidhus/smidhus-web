@@ -80,6 +80,14 @@
       "required_agents": [
         "builder"
       ]
+    },
+    {
+      "id": "T011",
+      "description": "Desarrollar el componente del pie de página global dentro de `src/app/components/Footer.tsx` e inyectarlo en la raíz base dentro de `src/app/layout.tsx`. Los elementos de texto deben usar de forma estricta un estilo gris atenuado y fuente monoespaciada pequeña (`text-[11px] tracking-wider text-zinc-500 font-mono`). A la izquierda, implementar dos enlaces funcionales e independientes en línea para 'PRIVACY POLICY' y 'LEGAL NOTICE' con transiciones suaves de opacidad. En el centro/derecha, mapear accesos directos estructurados que apunten a los perfiles profesionales del creador: 'X_TWITTER', 'GITHUB' y 'LINKEDIN'. En el extremo derecho, incrustar de forma imperativa el texto dinámico de propiedad intelectual: '© Copyright 2026, all smidhus dev'.",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
     }
   ]
 }

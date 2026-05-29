@@ -35,7 +35,7 @@ pnpm test      # Run the Vitest suite
 - Applies global Tailwind tokens for the Smidhus color palette.
 - Includes baseline quality scripts for linting, type checking, and tests in `package.json`.
 - Includes security headers for `X-Content-Type-Options`, `X-Frame-Options`, and `Referrer-Policy`.
-- Mounts a shared top-level navbar from the root layout so all routes inherit global navigation.
+- Mounts shared top-level navbar and footer components from the root layout so all routes inherit global navigation and site-wide closing content.
 - Renders the home page as a centered hero with the Smidhus character artwork and `READY SOON!` messaging.
 - Includes a canvas-based ambient particle overlay on the homepage hero.
 - Extends the landing page with `#projects` and `#systems` sections plus a technical specs drawer for the `REPHORA` and `SMIDHUS-HARNESS` cards.

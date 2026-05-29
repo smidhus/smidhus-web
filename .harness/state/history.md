@@ -117,3 +117,22 @@
 - Restyled system card identifiers (`.01 /`, `.02 /`, `.03 /`) to consistently use forge-orange monospace accent treatment.
 - Updated `src/app/components/TechnicalDrawer.tsx` to align drawer-framed areas and controls with the same surface language: semi-opaque dark background, structural borders, restrained idle glow, stronger hover glow on the close control, and refined framed code block treatment.
 - Validation completed from project root: `pnpm test` and `pnpm lint && pnpm typecheck` pass.
+
+## T011
+
+- Added tests first in `tests/footer-layout.test.tsx` to validate semantic footer markup, exact legal/profile labels, required typography utility contract, hover/focus opacity transitions, exact copyright text output, and root layout ordering (footer after `main`).
+- Created `src/app/components/Footer.tsx` as a reusable server component using semantic `<footer>` markup, link metadata arrays for legal and creator shortcuts, responsive wrapping layout for mobile/desktop distribution, and subtle interactive link states.
+- Implemented dynamic ownership text assembly in component code (`\u00A9`, year, and owner segments) so rendered output is exactly `© Copyright 2026, all smidhus dev`.
+- Updated `src/app/layout.tsx` to mount `<Footer />` after `<main>` while preserving the existing global flex-column layout structure.
+- Validation completed for task scope: `pnpm test -- tests/footer-layout.test.tsx tests/navbar-layout.test.tsx` (new footer tests pass; suite still includes a pre-existing failure in `tests/systems-section.test.tsx`) and `pnpm lint && pnpm typecheck` pass.
+
+## T011 Audit
+
+- Validation executed from the project root using the blueprint pipeline: `pnpm test`, `pnpm lint && pnpm typecheck`, and `pnpm build`.
+- `pnpm lint && pnpm typecheck` passed.
+- `pnpm build` passed.
+- `pnpm test` failed in `tests/systems-section.test.tsx` on `core stack and systems section > renders all architecture blocks with required labels and technical content`.
+- Failure details: the rendered home markup no longer contains the exact required section identifiers `.01 / AI ARCH`, `.02 / SDD MENTALITY`, and `.03 / EDGE RUNTIME`; it currently renders the headings without the numeric monospace prefixes, which breaks the T008/T010 contract still covered by the active suite.
+- `pnpm test` also emitted a React warning on stderr from `tests/navbar-layout.test.tsx`: `Received true for a non-boolean attribute priority.` This means the validation output is not fully clean even where assertions pass.
+- Broken audit criteria: the required validation suite is not fully green, so T011 cannot be approved or archived.
+- Builder follow-up: restore the exact systems-section identifier text expected by `tests/systems-section.test.tsx`, eliminate the leaking `priority` prop warning in the navbar test render path, and rerun the full blueprint pipeline until tests, lint, typecheck, and build all pass cleanly.
