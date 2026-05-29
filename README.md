@@ -37,6 +37,8 @@ pnpm test      # Run the Vitest suite
 - Includes security headers for `X-Content-Type-Options`, `X-Frame-Options`, and `Referrer-Policy`.
 - Mounts a shared top-level navbar from the root layout so all routes inherit global navigation.
 - Renders the home page as a centered hero with the Smidhus character artwork and `READY SOON!` messaging.
+- Includes a canvas-based ambient particle overlay on the homepage hero.
+- Extends the landing page with a `#projects` section for the `REPHORA` and `SMIDHUS-HARNESS` product cards.
 
 ## Learn More
 
