@@ -136,3 +136,22 @@
 - `pnpm test` also emitted a React warning on stderr from `tests/navbar-layout.test.tsx`: `Received true for a non-boolean attribute priority.` This means the validation output is not fully clean even where assertions pass.
 - Broken audit criteria: the required validation suite is not fully green, so T011 cannot be approved or archived.
 - Builder follow-up: restore the exact systems-section identifier text expected by `tests/systems-section.test.tsx`, eliminate the leaking `priority` prop warning in the navbar test render path, and rerun the full blueprint pipeline until tests, lint, typecheck, and build all pass cleanly.
+
+## T012
+
+- Added tests first in `tests/navbar-layout.test.tsx` to cover the new mobile navbar contract: trigger button semantics (`type`, `aria-label`, `aria-expanded`), mobile visibility intent (`md:hidden`), visible focus treatment, and closed-by-default state without mobile panel entries rendered.
+- Refactored `src/app/components/Navbar.tsx` into a client component (`"use client"`) with local `isOpen` state and a typed `mobileNavItems` configuration for `01 // PROJECTS`, `02 // SYSTEMS`, and `03 // SOURCE`.
+- Implemented a mobile-only hamburger trigger that renders a three-line icon in closed state and transitions to an `X` shape in open state using class-based transforms, while preserving the existing brand block and desktop-safe layout.
+- Implemented the mobile dropdown panel with the required forge styling (`absolute top-16 left-0 w-full bg-[#0A0D10]/95 backdrop-blur-lg border-b border-[#1F242C] z-50 flex flex-col p-6 gap-5`) and wired all entries to close the panel on activation.
+- Enforced external-link safety for `SOURCE` via `target="_blank"` and `rel="noopener noreferrer"`; preserved keyboard accessibility with focus-visible outlines on the trigger and all menu entries.
+- Validation completed from project root: `pnpm test tests/navbar-layout.test.tsx` and `pnpm lint && pnpm typecheck` pass.
+
+## T012 Audit
+
+- Validation executed from the project root using the blueprint pipeline: `pnpm test`, `pnpm lint && pnpm typecheck`, and `pnpm build`.
+- The run stopped at `pnpm test` because the suite failed before lint, typecheck, or build could execute.
+- `tests/systems-section.test.tsx:34` failed on `core stack and systems section > renders all architecture blocks with required labels and technical content`.
+- Failure details: the rendered systems cards no longer include the exact required labels `.01 / AI ARCH`, `.02 / SDD MENTALITY`, and `.03 / EDGE RUNTIME`. The current markup renders `AI ARCH`, `SDD MENTALITY`, and `EDGE RUNTIME` without the numeric monospace prefixes, which breaks the still-active T008/T010 contract.
+- `pnpm test` also emitted a React warning on stderr from `tests/navbar-layout.test.tsx`: `Received true for a non-boolean attribute priority.` This means the validation output is not fully clean even where assertions pass.
+- Broken audit criteria: the required validation suite is not fully green, so T012 cannot be approved or archived.
+- Builder follow-up: restore the exact systems-section identifier text expected by `tests/systems-section.test.tsx`, eliminate the leaking `priority` prop warning in the navbar test render path, and rerun the full blueprint pipeline until tests, lint, typecheck, and build all pass cleanly.

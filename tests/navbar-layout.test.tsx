@@ -33,6 +33,29 @@ describe("global navbar", () => {
     expect(markup).toContain("font-bold");
   });
 
+  it("renders a mobile-only menu trigger with accessible semantics", async () => {
+    const { default: Navbar } = await import("../src/app/components/Navbar");
+    const markup = renderToStaticMarkup(<Navbar />);
+
+    expect(markup).toContain('type="button"');
+    expect(markup).toContain('aria-label="Toggle navigation menu"');
+    expect(markup).toContain('aria-expanded="false"');
+    expect(markup).toContain("md:hidden");
+    expect(markup).toContain("focus-visible:outline");
+    expect(markup).toContain("focus-visible:outline-[#FF6B00]");
+  });
+
+  it("starts with a closed mobile menu and a three-line icon", async () => {
+    const { default: Navbar } = await import("../src/app/components/Navbar");
+    const markup = renderToStaticMarkup(<Navbar />);
+
+    expect(markup).toContain("h-0.5");
+    expect(markup).toContain("w-5");
+    expect(markup).not.toContain("01 // PROJECTS");
+    expect(markup).not.toContain("02 // SYSTEMS");
+    expect(markup).not.toContain("03 // SOURCE");
+  });
+
   it("mounts navbar before main content in root layout", async () => {
     const { default: RootLayout } = await import("../src/app/layout");
     const markup = renderToStaticMarkup(

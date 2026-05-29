@@ -88,6 +88,14 @@
       "required_agents": [
         "builder"
       ]
+    },
+    {
+      "id": "T012",
+      "description": "Desarrollar la variante responsiva del menú tipo hamburguesa dentro de `src/app/components/Navbar.tsx` para resoluciones inferiores a `md:`. 1) Interacción: Implementar un estado lógico de React (`isOpen`, `setIsOpen`) para conmutar la visibilidad del panel de navegación móvil. 2) Menú Desplegable: Al activarse, renderizar una capa flotante (`absolute top-16 left-0 w-full bg-[#0A0D10]/95 backdrop-blur-lg border-b border-[#1F242C] z-50 flex flex-col p-6 gap-5`) utilizando animaciones de transición fluidas. 3) Opciones Indexadas: El panel debe listar verticalmente en fuente monoespaciada (Fira Code) las siguientes referencias de acción táctica: '01 // PROJECTS' (enlace de scroll suave a #projects), '02 // SYSTEMS' (enlace de scroll suave a #systems), y '03 // SOURCE' (enlace externo a GitHub con guardias rel='noopener noreferrer'). 4) Estilo del Botón: El gatillo del menú debe usar un icono SVG minimalista de tres líneas horizontales que cambie sutilmente a una 'X' al estar activo, manteniendo la paleta de colores de la forja (#FF6B00 / Zinc-100).",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
     }
   ]
 }

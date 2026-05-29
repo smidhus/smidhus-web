@@ -36,6 +36,7 @@ pnpm test      # Run the Vitest suite
 - Includes baseline quality scripts for linting, type checking, and tests in `package.json`.
 - Includes security headers for `X-Content-Type-Options`, `X-Frame-Options`, and `Referrer-Policy`.
 - Mounts shared top-level navbar and footer components from the root layout so all routes inherit global navigation and site-wide closing content.
+- Uses a responsive navbar with a mobile-only menu for `#projects`, `#systems`, and the external `SOURCE` destination.
 - Renders the home page as a centered hero with the Smidhus character artwork and `READY SOON!` messaging.
 - Includes a canvas-based ambient particle overlay on the homepage hero.
 - Extends the landing page with `#projects` and `#systems` sections plus a technical specs drawer for the `REPHORA` and `SMIDHUS-HARNESS` cards.
