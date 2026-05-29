@@ -1,9 +1,11 @@
 import Image from "next/image";
+import ForgeParticles from "./components/ForgeParticles";
 
 export default function Home() {
   return (
     <section className="flex flex-1 items-center justify-center bg-[#0A0D10] px-6 py-16">
-      <div className="flex w-full max-w-5xl flex-col items-center gap-10 text-center">
+      <ForgeParticles />
+      <div className="relative z-20 flex w-full max-w-5xl flex-col items-center gap-10 text-center">
         <div className="relative flex items-center justify-center">
           <div
             aria-hidden="true"

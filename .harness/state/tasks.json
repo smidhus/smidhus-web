@@ -40,6 +40,14 @@
       "required_agents": [
         "builder"
       ]
+    },
+    {
+      "id": "T006",
+      "description": "Desarrollar un sistema de partículas interactivo de alto rendimiento usando HTML5 Canvas. 1) Crear el componente Client-Side (`'use client'`) en `src/app/components/ForgeParticles.tsx`. 2) Física Ambiental y Hover: Renderizar un conjunto inicial de partículas flotantes (ambientales). Al detectar el evento `mousemove`, calcular la distancia entre el cursor y las partículas; aplicar un vector de fuerza de atracción inversamente proporcional a la distancia (efecto magnético o de fluido). 3) Física de Impacto (Clic): Al capturar un evento `click`, instanciar un bucle que genere múltiples partículas nuevas ('chispas') en las coordenadas del ratón. Estas chispas deben inicializarse con vectores de velocidad altos (trayectorias radiales aleatorias), aplicar un coeficiente de fricción en cada frame (`velocity * 0.95`) para simular resistencia al aire, y un factor de degradación (`alpha decay`) para que pasen de amarillo incandescente (#FFD800) a naranja de forja (#FF6B00) hasta volverse transparentes y ser eliminadas del array de renderizado. 4) Integración: Montar `\u003cForgeParticles /\u003e` en `src/app/page.tsx` con estilos `position: fixed`, `inset: 0`, `z-index: 10`, y `pointer-events: none` para no obstruir los botones de la interfaz subyacente. Asegurar la limpieza (cleanup) de los event listeners y `requestAnimationFrame` al desmontar el componente.",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
     }
   ]
 }

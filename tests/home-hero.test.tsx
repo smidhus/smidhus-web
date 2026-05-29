@@ -50,6 +50,16 @@ describe("home hero presentation", () => {
     );
   });
 
+  it("mounts a fixed particle overlay without blocking CTAs", async () => {
+    const { default: Home } = await import("../src/app/page");
+    const markup = renderToStaticMarkup(<Home />);
+
+    expect(markup).toContain("fixed");
+    expect(markup).toContain("inset-0");
+    expect(markup).toContain("z-10");
+    expect(markup).toContain("relative z-20");
+  });
+
   it("renders SERVICES and PORTFOLIO action links with dashed style", async () => {
     const { default: Home } = await import("../src/app/page");
     const markup = renderToStaticMarkup(<Home />);

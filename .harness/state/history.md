@@ -54,3 +54,22 @@
 - `pnpm build` also emitted a Node experimental warning during `next build`: `ExperimentalWarning: Type Stripping is an experimental feature and might change at any time`.
 - Broken audit criterion: T005 cannot be approved or archived until the validation output is clean and warning-free.
 - Builder follow-up: eliminate the `priority` warning in the tested homepage render path, confirm whether the Node experimental warning is expected in this environment, and rerun the full blueprint pipeline until stdout and stderr are clean.
+
+## T006
+
+- Added tests first in `tests/forge-particles.test.tsx` to validate the particle canvas overlay contract (`pointer-events-none fixed inset-0 z-10`), spark burst generation with radial velocity and `0.95` friction, and yellow-to-orange color interpolation behavior.
+- Extended `tests/home-hero.test.tsx` with a page-level integration assertion to ensure the fixed particle overlay mounts and hero content remains in a higher stacking context (`relative z-20`) for readability.
+- Created `src/app/components/ForgeParticles.tsx` as a client component using Canvas 2D + `requestAnimationFrame`, with ambient particle drift, inverse-distance cursor attraction on `pointermove`, spark burst spawning on `pointerdown`, per-frame friction and alpha decay, and cleanup for animation/listeners on unmount.
+- Updated `src/app/page.tsx` to mount `<ForgeParticles />` while preserving existing hero layout, radial glow, headline, subtitle, and CTA links.
+- Validation completed from project root: targeted tests (`pnpm test tests/forge-particles.test.tsx tests/home-hero.test.tsx`), `pnpm lint && pnpm typecheck`, and `pnpm build` all pass.
+
+## T006 Audit
+
+- Validation executed from the project root using the blueprint pipeline: `pnpm test`, `pnpm lint && pnpm typecheck`, and `pnpm build`.
+- `pnpm lint && pnpm typecheck` passed.
+- `pnpm build` passed.
+- `pnpm test` failed in `tests/navbar-layout.test.tsx` on `global navbar > renders a semantic navigation landmark with brand image and text`.
+- Failure details: the rendered navbar markup does not include the required classes `backdrop-blur-md`, `bg-[#0A0D10]/80`, `border-b`, and `border-[#1F242C]`. The current component renders `<nav class="bg-header">`, which breaks the previously specified T002 styling contract.
+- Additional regression details in `src/app/components/Navbar.tsx`: the brand image currently renders at `width={31}` and `height={31}` instead of the required `32x32`, and the mocked test render emits `Received true for a non-boolean attribute priority.` because `priority` is being forwarded to the DOM in the test environment.
+- Broken audit criterion: the required validation suite is not fully green, so T006 cannot be approved or archived.
+- Builder follow-up: restore the exact navbar visual contract expected by `tests/navbar-layout.test.tsx`, correct the image dimensions to `32x32`, address the `priority` warning in the mocked render path if a clean run is required, and rerun the full blueprint pipeline until all checks pass.
