@@ -38,7 +38,8 @@ pnpm test      # Run the Vitest suite
 - Mounts a shared top-level navbar from the root layout so all routes inherit global navigation.
 - Renders the home page as a centered hero with the Smidhus character artwork and `READY SOON!` messaging.
 - Includes a canvas-based ambient particle overlay on the homepage hero.
-- Extends the landing page with a `#projects` section for the `REPHORA` and `SMIDHUS-HARNESS` product cards.
+- Extends the landing page with `#projects` and `#systems` sections plus a technical specs drawer for the `REPHORA` and `SMIDHUS-HARNESS` cards.
+- Uses a shared dark-forge surface language across framed cards, controls, and section identifiers.
 
 ## Learn More
 

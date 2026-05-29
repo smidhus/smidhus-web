@@ -49,4 +49,14 @@ describe("forge output products section", () => {
     expect(markup).toContain("hover:border-[#FF6B00]");
     expect(markup).toContain("focus-visible:ring-2");
   });
+
+  it("uses shared secondary surface and forge glow treatment for project cards", async () => {
+    const { default: Home } = await import("../src/app/page");
+    const markup = renderToStaticMarkup(<Home />);
+
+    expect(markup).toContain("bg-[#0A0D10]/40");
+    expect(markup).toContain("border-[#1F242C]");
+    expect(markup).toContain("shadow-[0_0_30px_rgba(255,107,0,0.03)]");
+    expect(markup).toContain("hover:shadow-[0_0_30px_rgba(255,107,0,0.12)]");
+  });
 });

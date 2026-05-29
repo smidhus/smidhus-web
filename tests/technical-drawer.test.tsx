@@ -23,6 +23,10 @@ describe("technical drawer", () => {
     expect(markup).toContain('aria-modal="true"');
     expect(markup).toContain('aria-labelledby="drawer-title"');
     expect(markup).toContain("CLOSE");
+    expect(markup).toContain("bg-[#0A0D10]/40");
+    expect(markup).toContain("border-[#1F242C]");
+    expect(markup).toContain("shadow-[0_0_30px_rgba(255,107,0,0.03)]");
+    expect(markup).toContain("hover:shadow-[0_0_30px_rgba(255,107,0,0.12)]");
   });
 
   it("renders a loading state while async content resolves", () => {

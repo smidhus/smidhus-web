@@ -72,6 +72,14 @@
       "required_agents": [
         "builder"
       ]
+    },
+    {
+      "id": "T010",
+      "description": "Refinar y auditar la fidelidad de estilos visuales en todas las tarjetas y recuadros de la aplicación tomando como base estricta el archivo `T010_mockup_smidhus_footer.jpg`. 1) Contenedores: Asegurar que los contenedores de las secciones secundarias usen fondos opacos controlados (`bg-[#0A0D10]/40`) con bordes internos limpios de tono `#1F242C`. 2) Resplandores Dinámicos: Inyectar sutiles sombras de caja (`shadow-[0_0_30px_rgba(255,107,0,0.03)]`) que reaccionen en los estados de hover aumentando a `rgba(255,107,0,0.12)`. 3) Consistencia Mono: Validar que todos los números identificadores de secciones (`01 //`, `02 //`, `.01 /`) estén perfectamente alineados bajo la fuente Fira Code y utilicen el color naranja de la forja como acento tipográfico primario.",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
     }
   ]
 }

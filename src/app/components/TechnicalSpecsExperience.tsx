@@ -21,17 +21,17 @@ const PRODUCTS = [
 
 const SYSTEM_BLOCKS = [
   {
-    title: ".01 / AI ARCH",
+    title: "AI ARCH",
     description:
       "Streaming inference flows are orchestrated with strict validation protocols so each response stage remains observable, auditable, and safe under production load.",
   },
   {
-    title: ".02 / SDD MENTALITY",
+    title: "SDD MENTALITY",
     description:
       "Spec-Driven Development constrains LLM behavior through deterministic simulation environments, reducing hallucinations before changes reach runtime systems.",
   },
   {
-    title: ".03 / EDGE RUNTIME",
+    title: "EDGE RUNTIME",
     description:
       "Distributed execution on Vercel Edge keeps latency near sub-100ms for critical interactions while preserving globally consistent delivery characteristics.",
   },
@@ -100,6 +100,9 @@ export default function TechnicalSpecsExperience() {
     setIsLoading(false);
     setSelectedSpec(null);
   };
+
+  const framedSurfaceClass =
+    "border border-[#1F242C] bg-[#0A0D10]/40 shadow-[0_0_30px_rgba(255,107,0,0.03)] transition-all duration-300 ease-in-out hover:shadow-[0_0_30px_rgba(255,107,0,0.12)]";
 
   return (
     <main className="relative isolate flex flex-1 flex-col overflow-hidden bg-[#0A0D10]">
@@ -178,7 +181,7 @@ export default function TechnicalSpecsExperience() {
               {PRODUCTS.map((product) => (
                 <article
                   key={product.name}
-                  className="flex min-h-64 flex-col gap-5 border border-[#1F242C] bg-[#0A0D10]/70 p-6"
+                  className={`${framedSurfaceClass} flex min-h-64 flex-col gap-5 p-6`}
                 >
                   <header className="space-y-3">
                     <h3 className="font-mono text-xl font-bold tracking-[0.08em] text-zinc-100">{product.name}</h3>
@@ -193,7 +196,7 @@ export default function TechnicalSpecsExperience() {
                     <button
                       type="button"
                       onClick={() => void handleOpenDrawer(product.name)}
-                      className="border border-dashed border-[#1F242C] bg-[#0A0D10]/40 px-6 py-3 text-center font-mono text-xs font-semibold tracking-[0.12em] text-zinc-300 transition-all duration-300 ease-in-out hover:border-[#FF6B00] hover:text-white hover:shadow-[0_0_24px_rgba(255,107,0,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]"
+                      className="border border-dashed border-[#1F242C] bg-[#0A0D10]/40 px-6 py-3 text-center font-mono text-xs font-semibold tracking-[0.12em] text-zinc-300 shadow-[0_0_30px_rgba(255,107,0,0.03)] transition-all duration-300 ease-in-out hover:border-[#FF6B00] hover:text-white hover:shadow-[0_0_30px_rgba(255,107,0,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]"
                     >
                       VIEW TECHNICAL SPECS
                     </button>
@@ -214,9 +217,9 @@ export default function TechnicalSpecsExperience() {
               {SYSTEM_BLOCKS.map((block) => (
                 <article
                   key={block.title}
-                  className="flex min-h-64 flex-col gap-4 border border-dashed border-[#1F242C] bg-[#0A0D10]/70 p-6"
+                  className={`${framedSurfaceClass} flex min-h-64 flex-col gap-4 border-dashed p-6`}
                 >
-                  <h3 className="font-mono text-base font-bold tracking-[0.1em] text-zinc-100 sm:text-lg">{block.title}</h3>
+                  <h3 className="font-mono text-base font-bold tracking-[0.1em] text-[#FF6B00] sm:text-lg">{block.title}</h3>
 
                   <p className="font-sans text-sm leading-relaxed text-zinc-400 sm:text-base">{block.description}</p>
                 </article>

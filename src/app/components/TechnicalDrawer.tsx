@@ -33,7 +33,7 @@ export default function TechnicalDrawer({
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
-      className="fixed right-0 top-0 z-50 h-full w-full max-w-2xl border-l border-[#1F242C] bg-[#0D1116]"
+      className="fixed right-0 top-0 z-50 h-full w-full max-w-2xl border-l border-[#1F242C] bg-[#0A0D10]/40 shadow-[0_0_30px_rgba(255,107,0,0.03)]"
     >
       <div className="flex h-full flex-col">
         <header className="flex items-center justify-between border-b border-[#1F242C] px-5 py-4 sm:px-6">
@@ -44,7 +44,7 @@ export default function TechnicalDrawer({
           <button
             type="button"
             onClick={onClose}
-            className="border border-dashed border-[#1F242C] px-3 py-2 font-mono text-xs font-semibold tracking-[0.12em] text-zinc-300 transition-all duration-300 ease-in-out hover:border-[#FF6B00] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1116]"
+            className="border border-dashed border-[#1F242C] bg-[#0A0D10]/40 px-3 py-2 font-mono text-xs font-semibold tracking-[0.12em] text-zinc-300 shadow-[0_0_30px_rgba(255,107,0,0.03)] transition-all duration-300 ease-in-out hover:border-[#FF6B00] hover:text-white hover:shadow-[0_0_30px_rgba(255,107,0,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1116]"
           >
             CLOSE
           </button>
@@ -88,7 +88,7 @@ export default function TechnicalDrawer({
 
               <section className="space-y-2">
                 <h3 className="font-mono text-xs font-semibold tracking-[0.12em] text-[#00FF66]">TYPESCRIPT SAMPLE</h3>
-                <pre className="overflow-x-auto border border-dashed border-[#1F242C] bg-[#0A0D10] p-4">
+                <pre className="overflow-x-auto border border-dashed border-[#1F242C] bg-[#0A0D10]/40 p-4 shadow-[0_0_30px_rgba(255,107,0,0.03)]">
                   <code className="font-mono text-xs leading-relaxed text-zinc-300">{content.codeSample}</code>
                 </pre>
               </section>

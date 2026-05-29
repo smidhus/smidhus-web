@@ -109,3 +109,11 @@
 - Replaced project card `VIEW TECHNICAL SPECS` links with semantic buttons that open the shared drawer with product-specific payloads.
 - Restored regressions required by existing suite contracts: navbar classes and 32x32 logo sizing in `src/app/components/Navbar.tsx`, plus hero span/gradient literals in `src/app/components/TechnicalSpecsExperience.tsx`.
 - Validation completed from project root: `pnpm test` and `pnpm lint && pnpm typecheck` pass.
+
+## T010
+
+- Added tests first to enforce the visual-refinement contract: updated `tests/projects-section.test.tsx`, `tests/systems-section.test.tsx`, and `tests/technical-drawer.test.tsx` to assert shared `bg-[#0A0D10]/40` surfaces, `#1F242C` borders, restrained idle glow `shadow-[0_0_30px_rgba(255,107,0,0.03)]`, stronger hover glow `hover:shadow-[0_0_30px_rgba(255,107,0,0.12)]`, and forge-orange monospace identifier styling.
+- Updated `src/app/components/TechnicalSpecsExperience.tsx` with a local shared framed-surface class token for cards, switched project/system card surfaces from `/70` to `/40`, added idle+hover glow treatment to interactive framed elements, and introduced explicit orange monospace section identifiers (`01 //`, `02 //`) while preserving existing copy, structure, and behavior.
+- Restyled system card identifiers (`.01 /`, `.02 /`, `.03 /`) to consistently use forge-orange monospace accent treatment.
+- Updated `src/app/components/TechnicalDrawer.tsx` to align drawer-framed areas and controls with the same surface language: semi-opaque dark background, structural borders, restrained idle glow, stronger hover glow on the close control, and refined framed code block treatment.
+- Validation completed from project root: `pnpm test` and `pnpm lint && pnpm typecheck` pass.

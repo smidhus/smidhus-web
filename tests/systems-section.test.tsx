@@ -50,6 +50,16 @@ describe("core stack and systems section", () => {
 
     expect(markup).toContain("border-dashed");
     expect(markup).toContain("border-[#1F242C]");
-    expect(markup).toContain("bg-[#0A0D10]/70");
+    expect(markup).toContain("bg-[#0A0D10]/40");
+    expect(markup).toContain("shadow-[0_0_30px_rgba(255,107,0,0.03)]");
+    expect(markup).toContain("hover:shadow-[0_0_30px_rgba(255,107,0,0.12)]");
+  });
+
+  it("styles technical section identifiers with forge orange monospace accents", async () => {
+    const { default: Home } = await import("../src/app/page");
+    const markup = renderToStaticMarkup(<Home />);
+
+    expect(markup).toContain("text-[#FF6B00]");
+    expect(markup).toContain("font-mono");
   });
 });
