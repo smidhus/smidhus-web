@@ -91,3 +91,11 @@
 - `pnpm test` also emitted a React warning on stderr: `Received true for a non-boolean attribute priority.` The navbar render path still leaks a `priority` prop into the mocked DOM output, so the validation output is not clean.
 - Broken audit criteria: the validation suite is not fully green, and the task cannot be approved or archived while these regressions remain.
 - Builder follow-up: restore the exact hero and navbar contracts required by the existing tests, eliminate the `priority` warning in the tested render path, and rerun the full blueprint pipeline until tests, lint, typecheck, and build all pass cleanly.
+
+## T008
+
+- Added tests first in `tests/systems-section.test.tsx` to validate the `#systems` anchor, `[CORE STACK & SYSTEMS]` heading, responsive `grid-cols-1` to `lg:grid-cols-3` behavior, required `.01/.02/.03` labels and technical copy, plus dashed structural styling tokens.
+- Updated `src/app/page.tsx` by introducing a local `SYSTEM_BLOCKS` data array and appending a semantic `section id="systems"` after `#projects` to preserve existing hero/particle/products flow.
+- Implemented three technical architecture cards (`.01 / AI ARCH`, `.02 / SDD MENTALITY`, `.03 / EDGE RUNTIME`) with dashed `#1F242C` borders, dark panel background, monospace headings, and readable descriptive body text for mobile and desktop.
+- Validation completed for task scope: `pnpm test tests/systems-section.test.tsx` and `pnpm lint && pnpm typecheck` pass.
+- Note: full `pnpm test` currently remains red due to pre-existing regressions in `tests/home-hero.test.tsx` and `tests/navbar-layout.test.tsx`, unrelated to T008 changes.

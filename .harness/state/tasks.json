@@ -60,12 +60,15 @@
     {
       "id": "T008",
       "description": "Desarrollar la sección de arquitectura e infraestructura técnica `[CORE STACK \u0026 SYSTEMS]` vinculada al ID `#systems` en `src/app/page.tsx`. Diseñar un contenedor técnico modular con un grid de 3 columnas utilizando líneas divisorias punteadas (`border-dashed border-[#1F242C]`). Cada bloque debe plasmar métricas y descripciones de alta ingeniería: 1) '.01 / AI ARCH' enfocado en flujos de inferencia en streaming y protocolos de validación estrictos. 2) '.02 / SDD MENTALITY' explicando cómo Spec-Driven Development limita las alucinaciones de los LLM mediante entornos de simulación deterministas. 3) '.03 / EDGE RUNTIME' detallando ejecuciones distribuidas en Vercel Edge con respuestas sub-100ms.",
-      "status": "spec_ready"
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
     },
     {
       "id": "T009",
       "description": "Implementar el sistema interactivo de documentación técnica mediante paneles laterales asíncronos estilo IDE (Code Drawer). 1) Crear un componente de estado compartido o modal flotante en `src/app/components/TechnicalDrawer.tsx` activado por los botones 'VIEW TECHNICAL SPECS'. 2) Cuando el panel esté activo (`fixed top-0 right-0 h-full z-50 w-full max-w-2xl bg-[#0D1116] border-l border-[#1F242C]`), aplicar un filtro de aislamiento en la landing page principal (`opacity-30 blur-sm pointer-events-none`). 3) El contenido interno del panel debe renderizar diagramas de arquitectura en Markdown, estrategias de Prompt Engineering y fragmentos de código TypeScript simulados utilizando fuentes monoespaciadas y barras de scroll independientes de alto rendimiento.",
-      "status": "pending"
+      "status": "spec_ready"
     }
   ]
 }

@@ -14,6 +14,24 @@ const PRODUCTS = [
   },
 ];
 
+const SYSTEM_BLOCKS = [
+  {
+    title: ".01 / AI ARCH",
+    description:
+      "Streaming inference flows are orchestrated with strict validation protocols so each response stage remains observable, auditable, and safe under production load.",
+  },
+  {
+    title: ".02 / SDD MENTALITY",
+    description:
+      "Spec-Driven Development constrains LLM behavior through deterministic simulation environments, reducing hallucinations before changes reach runtime systems.",
+  },
+  {
+    title: ".03 / EDGE RUNTIME",
+    description:
+      "Distributed execution on Vercel Edge keeps latency near sub-100ms for critical interactions while preserving globally consistent delivery characteristics.",
+  },
+];
+
 export default function Home() {
   return (
     <main className="relative isolate flex flex-1 flex-col overflow-hidden bg-[#0A0D10]">
@@ -118,6 +136,31 @@ export default function Home() {
                     VIEW TECHNICAL SPECS
                   </a>
                 </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="systems" className="relative z-20 px-6 pb-24 pt-4">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
+          <h2 className="font-mono text-xl font-bold uppercase tracking-[0.1em] text-zinc-100 sm:text-2xl">
+            [CORE STACK &amp; SYSTEMS]
+          </h2>
+
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+            {SYSTEM_BLOCKS.map((block) => (
+              <article
+                key={block.title}
+                className="flex min-h-64 flex-col gap-4 border border-dashed border-[#1F242C] bg-[#0A0D10]/70 p-6"
+              >
+                <h3 className="font-mono text-base font-bold tracking-[0.1em] text-zinc-100 sm:text-lg">
+                  {block.title}
+                </h3>
+
+                <p className="font-sans text-sm leading-relaxed text-zinc-400 sm:text-base">
+                  {block.description}
+                </p>
               </article>
             ))}
           </div>
