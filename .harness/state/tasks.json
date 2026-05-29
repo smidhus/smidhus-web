@@ -68,7 +68,10 @@
     {
       "id": "T009",
       "description": "Implementar el sistema interactivo de documentación técnica mediante paneles laterales asíncronos estilo IDE (Code Drawer). 1) Crear un componente de estado compartido o modal flotante en `src/app/components/TechnicalDrawer.tsx` activado por los botones 'VIEW TECHNICAL SPECS'. 2) Cuando el panel esté activo (`fixed top-0 right-0 h-full z-50 w-full max-w-2xl bg-[#0D1116] border-l border-[#1F242C]`), aplicar un filtro de aislamiento en la landing page principal (`opacity-30 blur-sm pointer-events-none`). 3) El contenido interno del panel debe renderizar diagramas de arquitectura en Markdown, estrategias de Prompt Engineering y fragmentos de código TypeScript simulados utilizando fuentes monoespaciadas y barras de scroll independientes de alto rendimiento.",
-      "status": "spec_ready"
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
     }
   ]
 }

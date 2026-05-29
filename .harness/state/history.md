@@ -99,3 +99,13 @@
 - Implemented three technical architecture cards (`.01 / AI ARCH`, `.02 / SDD MENTALITY`, `.03 / EDGE RUNTIME`) with dashed `#1F242C` borders, dark panel background, monospace headings, and readable descriptive body text for mobile and desktop.
 - Validation completed for task scope: `pnpm test tests/systems-section.test.tsx` and `pnpm lint && pnpm typecheck` pass.
 - Note: full `pnpm test` currently remains red due to pre-existing regressions in `tests/home-hero.test.tsx` and `tests/navbar-layout.test.tsx`, unrelated to T008 changes.
+
+## T009
+
+- Added tests first in `tests/technical-drawer.test.tsx` to validate dialog semantics, close control visibility, loading/fallback rendering, and asynchronous spec lookup behavior for `REPHORA`, `SMIDHUS-HARNESS`, and unknown product IDs.
+- Created `src/app/components/TechnicalDrawer.tsx` as a reusable client drawer panel (`fixed right-0 top-0 h-full w-full max-w-2xl`) with `role="dialog"`, `aria-modal`, `aria-labelledby`, internal `overflow-y-auto` scrolling, structured sections (summary/architecture/prompt strategy/code), and safe `<pre><code>` rendering.
+- Created `src/app/components/TechnicalSpecsExperience.tsx` as the interactive client wrapper that keeps page composition intact, manages shared drawer state, applies page isolation (`opacity-30 blur-sm pointer-events-none`), and resolves specs through async `loadTechnicalSpec(productId)`.
+- Refactored `src/app/page.tsx` into a thin server component that renders `TechnicalSpecsExperience`, preserving App Router server composition while isolating interaction state in a client boundary.
+- Replaced project card `VIEW TECHNICAL SPECS` links with semantic buttons that open the shared drawer with product-specific payloads.
+- Restored regressions required by existing suite contracts: navbar classes and 32x32 logo sizing in `src/app/components/Navbar.tsx`, plus hero span/gradient literals in `src/app/components/TechnicalSpecsExperience.tsx`.
+- Validation completed from project root: `pnpm test` and `pnpm lint && pnpm typecheck` pass.
