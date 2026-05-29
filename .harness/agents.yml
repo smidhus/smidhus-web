@@ -1,0 +1,54 @@
+# =======================================================================
+# SMIDHUS HARNESS - AGENTS CONFIGURATION
+# =======================================================================
+# You can edit this file at any time to change the models assigned to
+# each agent. If an agent is struggling with a complex task, try upgrading
+# its model to one with higher reasoning capabilities.
+
+global_settings:
+  # Maximum seconds to wait for any single OpenCode invocation.
+  timeout: 900
+  # Thinking budget in milliseconds (0 = no explicit limit, model decides).
+  thinking_budget_ms: 4000
+  # Circuit breaker activation to prevent infinite loops and token bleeding.
+  auto_approve_specs: true
+    # Maximum automatic retries for failed agent tasks (default: 2)
+  max_retries: 2
+
+agents:
+  # ARCHITECT: Analyzes requirements, designs the system, and dictates technical rules.
+  # Recommended: High Reasoning Models (e.g., openai/gpt-5.4)
+  architect:
+    model: "openai/gpt-5.4"
+
+  # BUILDER: Writes the core business logic, components, and implements the specs.
+  # Recommended: Specialized Coding Models (e.g., openai/gpt-5.3-codex)
+  builder:
+    model: "openai/gpt-5.3-codex"
+    skills:
+      - "vercel-labs/agent-skills/vercel-react-best-practices"
+
+  # GATEKEEPER: Reviews code, enforces security, and ensures blueprint compliance.
+  # Recommended: High Reasoning Models for strict auditing
+  gatekeeper:
+    model: "openai/gpt-5.4"
+    skills:
+      - "vercel-labs/agent-browser/agent-browser"
+
+  # CLOUD: Manages IaC, deployment scripts, and infrastructure configuration.
+  # Recommended: Fast/Standard Models
+  cloud:
+    model: "openai/gpt-5.4-fast"
+
+  # DESIGNER: Handles UI/UX components, CSS, and aesthetic implementations.
+  # Recommended: Vision-capable models with advanced styling skills
+  designer:
+    model: "openai/gpt-5.4"
+    skills:
+      - "anthropics/skills/frontend-design"
+      - "vercel-labs/agent-skills/web-design-guidelines"
+
+  # DOCUMENTER: Generates READMEs, inline comments, and API documentation.
+  # Recommended: Fast/Standard Models
+  documenter:
+    model: "openai/gpt-5.4-mini-fast"

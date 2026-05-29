@@ -1,0 +1,45 @@
+{
+  "project": "smidhus-web",
+  "tasks": [
+    {
+      "id": "T001",
+      "description": "Inicializar un proyecto limpio de Next.js utilizando TypeScript y el App Router. 1) Paleta Base: Configurar `tailwind.config.ts` con el fondo principal #0A0D10 (Negro Carbón Industrial), naranja de la forja #FF6B00, verde terminal #00FF66, y gris de bordes estructurales #1F242C. 2) Tipografía: Precargar fuentes de Google mediante `next/font/google`. Aplicar 'Fira Code' (monoespaciada) para encabezados, navegación y elementos técnicos, e 'Inter' (sans-serif) para los textos descriptivos generales. 3) Seguridad: Actualizar `next.config.js` para forzar cabeceras HTTP estrictas (X-Content-Type-Options: nosniff, X-Frame-Options: DENY, Referrer-Policy: strict-origin-when-cross-origin). Asegurar que el proyecto compile con cero advertencias.",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
+    },
+    {
+      "id": "T002",
+      "description": "Crear un componente de navegación desacoplado y semántico en `src/app/components/Navbar.tsx`. El diseño debe contar con un efecto de desenfoque de fondo (`backdrop-blur-md bg-[#0A0D10]/80`) y un borde inferior delgado usando `#1F242C`. En el costado izquierdo, renderizar el isotipo de la marca usando el componente `\u003cImage src='/smidhus_logo.svg' width={32} height={32} alt='Smidhus Logo' /\u003e` alineado horizontalmente con la palabra 'SMIDHUS' en mayúsculas, negrita, espaciado ancho (tracking-wider) y la fuente Fira Code. Integrar este componente directamente en `src/app/layout.tsx` arriba del árbol de contenido principal.",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
+    },
+    {
+      "id": "T003",
+      "description": "Desarrollar el componente del pie de página global dentro de `src/app/components/Footer.tsx` e inyectarlo en la raíz base dentro de `src/app/layout.tsx`. Siguiendo la disposición de referencia en `mockup_smidhus_init.jpg`, los elementos de texto deben usar un estilo gris atenuado (#6B7280) y un tamaño de fuente pequeño y limpio. A la izquierda, implementar dos enlaces en línea: 'PRIVACY POLICY' y 'LEGAL NOTICE' con transiciones sutiles de opacidad al pasar el cursor. A la derecha, incrustar de forma estricta el texto de propiedad intelectual: '© Copyright 2026, all smidhus.dev'.",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
+    },
+    {
+      "id": "T004",
+      "description": "Implementar la presentación central en `src/app/page.tsx` respetando las proporciones de composición de `mockup_smidhus_init.jpg`. 1) Imagen Principal: Centrar el elemento gráfico del personaje apuntando directamente al archivo `/smidhus_character_logo.svg` ubicado en la carpeta pública. 2) Tipografía y Semántica: Renderizar el eslogan principal exactamente en letras mayúsculas: 'WE ARE BUSY FORGING, DO NOT DISTURB... READY SOON!'. La cadena de texto 'READY SOON!' debe llevar explícitamente el color naranja de la forja (#FF6B00). 3) Subtítulo: Agregar la cadena de texto inmediatamente abajo: 'Rephora and other Smidhus projects in development.' usando la fuente Inter.",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
+    },
+    {
+      "id": "T005",
+      "description": "Ajustar los detalles finales en `src/app/page.tsx` agregando interactividad y efectos basados en `mockup_smidhus_init.jpg`. 1) Resplandor de la Forja: Inyectar una capa con un gradiente radial (`radial-gradient(circle, rgba(255,107,0,0.15) 0%, transparent 60%)`) justo detrás del vector del personaje para simular la atmósfera cálida del horno. 2) Acciones de Navegación: Renderizar dos botones simétricos lado a lado debajo de los titulares: 'SERVICES' y 'PORTFOLIO'. Los botones deben usar tipografía monoespaciada, alineación centrada, contenedores con bordes segmentados (dashed) discretos y transiciones suaves (ease-in-out) de iluminación al posicionar el mouse encima.",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
+    }
+  ]
+}

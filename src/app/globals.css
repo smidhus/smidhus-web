@@ -1,0 +1,17 @@
+@config "../../tailwind.config.ts";
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0a0d10;
+  --color-foreground: #e5e7eb;
+  --color-header: #1d2124;
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-fira-code);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-inter), sans-serif;
+}
+
