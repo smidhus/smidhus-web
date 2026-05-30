@@ -11,9 +11,9 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { label: "FORGE", href: "#forge-output" },
-  { label: "CRAFT", href: "#core-craft" },
-  { label: "COMMS", href: "#comms" },
+  { label: "FORGE", href: "/#forge-output" },
+  { label: "CRAFT", href: "/#core-craft" },
+  { label: "COMMS", href: "/#comms" },
 ];
 
 export default function Navbar() {
@@ -68,13 +68,13 @@ export default function Navbar() {
               }
 
               return (
-                <a
+                <Link
                   key={item.label}
                   href={item.href}
                   className="font-mono text-sm font-semibold uppercase tracking-[0.12em] text-smidhus-bone-dim transition-colors duration-300 hover:text-[#D38B5b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D38B5b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]"
                 >
                   {item.label}
-                </a>
+                </Link>
               );
             })}
           </div>
@@ -130,14 +130,14 @@ export default function Navbar() {
               }
 
               return (
-                <a
+                <Link
                   key={item.label}
                   href={item.href}
                   className="font-mono text-sm font-semibold uppercase tracking-[0.12em] text-smidhus-bone transition-colors duration-300 hover:text-[#D38B5b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D38B5b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]"
                   onClick={handleCloseMenu}
                 >
                   {item.label}
-                </a>
+                </Link>
               );
             })}
           </div>

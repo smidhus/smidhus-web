@@ -19,6 +19,8 @@ describe("global footer", () => {
 
     expect(markup).toContain("PRIVACY POLICY");
     expect(markup).toContain("LEGAL NOTICE");
+    expect(markup).toContain('href="/legal/privacy-policy"');
+    expect(markup).toContain('href="/legal/legal-notice"');
     expect(markup).toContain("X_TWITTER");
     expect(markup).toContain("GITHUB");
     expect(markup).toContain("LINKEDIN");

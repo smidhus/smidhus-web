@@ -41,6 +41,7 @@ pnpm test      # Run the Vitest suite
 - Includes a canvas-based ambient particle overlay on the homepage hero.
 - Extends the landing page with `#projects` and `#systems` sections plus a technical specs drawer for the `REPHORA` and `SMIDHUS-HARNESS` cards.
 - Uses a shared dark-forge surface language across framed cards, controls, and section identifiers.
+- Serves markdown-backed legal pages at `/legal/[slug]` from `content/legal/` using `gray-matter` for frontmatter parsing and `react-markdown` for rendering.
 
 ## Learn More
 

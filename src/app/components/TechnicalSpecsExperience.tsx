@@ -44,6 +44,26 @@ const CORE_CRAFT_BLOCKS = [
   },
 ] as const;
 
+const SMITH_PROFILE = {
+  name: "Juan Zuluaga",
+  intro:
+    "Smidhus is forged by Juan Zuluaga, a software engineer with 11+ years of experience turning business problems into backend systems, cloud-ready platforms, automations, and digital products.",
+  description:
+    "This forge is where I build focused products, experiment with AI-powered workflows, and shape technical ideas into systems that can run, scale, and be maintained.",
+  experience: "11+ years building production software",
+  focus: "Backend, cloud, automation, architecture, and product delivery",
+  links: [
+    {
+      label: "PERSONAL LINKEDIN",
+      href: "https://www.linkedin.com/in/juanfzuluagag",
+    },
+    {
+      label: "PERSONAL GITHUB",
+      href: "https://github.com/juanfzuluagag",
+    },
+  ],
+} as const;
+
 type ProductId = (typeof PRODUCTS)[number]["name"];
 
 export const TECHNICAL_SPECS: Record<ProductId, TechnicalSpec> = {
@@ -278,16 +298,26 @@ export default function TechnicalSpecsExperience() {
               <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr]">
                 <div className="flex flex-col gap-5">
                   <p className="font-sans text-base leading-relaxed text-smidhus-bone-dim sm:text-lg">
-                    Smidhus is forged by Juan Zuluaga, a software engineer with
-                    11+ years of experience turning business problems into backend
-                    systems, cloud-ready platforms, automations, and digital
-                    products.
+                    {SMITH_PROFILE.intro}
                   </p>
 
                   <p className="font-sans text-base leading-relaxed text-smidhus-bone-dim sm:text-lg">
-                    The work starts with product vision and ends with systems that
-                    can run, scale, and be maintained.
+                    {SMITH_PROFILE.description}
                   </p>
+
+                  <div className="flex flex-wrap gap-3 pt-2">
+                    {SMITH_PROFILE.links.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={secondaryActionClass}
+                      >
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1">
@@ -296,7 +326,7 @@ export default function TechnicalSpecsExperience() {
                       EXPERIENCE
                     </p>
                     <p className="mt-2 font-mono text-sm leading-relaxed text-smidhus-bone-dim">
-                      11+ years building production software
+                      {SMITH_PROFILE.experience}
                     </p>
                   </div>
 
@@ -305,7 +335,7 @@ export default function TechnicalSpecsExperience() {
                       FOCUS
                     </p>
                     <p className="mt-2 font-mono text-sm leading-relaxed text-smidhus-bone-dim">
-                      Backend, cloud, automation, architecture, and product delivery
+                      {SMITH_PROFILE.focus}
                     </p>
                   </div>
                 </div>

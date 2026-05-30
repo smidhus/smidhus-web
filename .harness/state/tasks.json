@@ -96,6 +96,22 @@
       "required_agents": [
         "builder"
       ]
+    },
+    {
+      "id": "T013",
+      "description": "Configurar la arquitectura de persistencia y el motor de enrutamiento dinámico para las páginas legales en Next.js utilizando el App Router. 1) Estructura del Sistema: Crear la ruta dinámica en `src/app/legal/[slug]/page.tsx` actuando estrictamente como un Server Component (RSC). 2) Extracción de Datos: Utilizar el módulo nativo de Node.js `fs` y `path` para buscar de forma asíncrona archivos con extensión `.md` dentro del directorio raíz `content/legal/`. 3) Parser de Contenido: Implementar la librería `gray-matter` para extraer de forma limpia los metadatos estructurados del Frontmatter (tales como `title`, `subtitle`, y `lastUpdated`) y procesar el cuerpo del texto plano usando un parseador de Markdown compatible con Server Components. 4) Resguardo de Rutas: Inyectar una cláusula de seguridad imperativa que dispare la función `notFound()` nativa de Next.js si el archivo físico `.md` solicitado por el parámetro `[slug]` no existe en el disco duro del servidor.",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
+    },
+    {
+      "id": "T014",
+      "description": "Desarrollar y auditar la maquetación estética industrial de la interfaz legal en `src/app/legal/[slug]/page.tsx` alineada al mockup de la fundición. 1) Envoltorio Visual: Encapsular el contenido en un contenedor centrado con ancho máximo controlado (`max-w-3xl`) aplicando un fondo translúcido (`bg-[#0A0D10]/50`), un borde interno segmentado de tono tecnológico (`border-dashed border-[#1F242C]`) y un sutil resplandor de caja naranja reactivo a nivel de backend. 2) Cabecera Dinámica: Pinta un badge superior con fuente monoespaciada en color verde terminal (`text-[#00FF66]`) que declare 'STATUS: OFFICIALLY_PUBLISHED //', seguido del título (`data.title`) y la metadata de última modificación. 3) Consistencia de Navegación: Diseñar un Breadcrumb minimalista superior con un enlace `\u003cLink\u003e` optimizado que apunte a la raíz principal con el texto 'RETURN // CORE_NODE', configurando transiciones suaves hacia el naranja de la forja (`hover:text-[#FF6B00]`). 4) Cuerpo Semántico: Aplicar clases tipográficas globales para heredar 'Inter' en párrafos extensos de lectura y 'Fira Code' en subtítulos de secciones para preservar la identidad estética de Smidhus.",
+      "status": "done",
+      "required_agents": [
+        "builder"
+      ]
     }
   ]
 }

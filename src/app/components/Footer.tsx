@@ -1,12 +1,12 @@
 const legalLinks = [
-  { label: "PRIVACY POLICY", href: "/privacy-policy" },
-  { label: "LEGAL NOTICE", href: "/legal-notice" },
+  { label: "PRIVACY POLICY", href: "/legal/privacy-policy" },
+  { label: "LEGAL NOTICE", href: "/legal/legal-notice" },
 ];
 
 const profileLinks = [
-  { label: "X_TWITTER", href: "https://x.com" },
-  { label: "GITHUB", href: "https://github.com" },
-  { label: "LINKEDIN", href: "https://linkedin.com" },
+  { label: "X_TWITTER", href: "https://x.com/smidhus_forge" },
+  { label: "GITHUB", href: "https://github.com/smidhus" },
+  { label: "LINKEDIN", href: "https://www.linkedin.com/company/smidhus" },
 ];
 
 const copyrightYear = 2026;

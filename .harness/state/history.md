@@ -155,3 +155,29 @@
 - `pnpm test` also emitted a React warning on stderr from `tests/navbar-layout.test.tsx`: `Received true for a non-boolean attribute priority.` This means the validation output is not fully clean even where assertions pass.
 - Broken audit criteria: the required validation suite is not fully green, so T012 cannot be approved or archived.
 - Builder follow-up: restore the exact systems-section identifier text expected by `tests/systems-section.test.tsx`, eliminate the leaking `priority` prop warning in the navbar test render path, and rerun the full blueprint pipeline until tests, lint, typecheck, and build all pass cleanly.
+
+## T013
+
+- Added tests first in `tests/legal-routing.test.tsx` to validate filesystem-backed slug discovery, frontmatter parsing (`title`, `subtitle`, `lastUpdated`), static params generation from markdown filenames, successful legal route rendering, and `notFound()` behavior for unknown slugs.
+- Added `src/lib/legal.ts` as a server utility using `node:fs/promises` and `node:path` to load legal markdown files from `content/legal`, parse frontmatter with `gray-matter`, and return typed `LegalDocument` payloads.
+- Created `src/app/legal/[slug]/page.tsx` as a Server Component route that loads content by slug, calls `notFound()` when absent, renders markdown via `react-markdown`, and exports `generateStaticParams()` for SSG.
+- Updated `src/app/components/Footer.tsx` legal links to target the new route shape: `/legal/privacy-policy` and `/legal/legal-notice`.
+- Added runtime dependencies `gray-matter` and `react-markdown` in `package.json` and updated the pnpm lockfile.
+- Validation completed from project root: `pnpm test`, `pnpm lint && pnpm typecheck`, and `pnpm build` all pass.
+
+## T014
+
+- Added tests first in `tests/legal-routing.test.tsx` with a new presentation-focused assertion that validates the legal-page industrial shell contract (`max-w-3xl`, translucent background, dashed `#1F242C` border, subtle forge glow), status badge, breadcrumb label/hover state, and markdown heading typography hook (`prose-headings:font-mono`).
+- Refined `src/app/legal/[slug]/page.tsx` layout while preserving server rendering and existing route behavior from T013: breadcrumb remains above the article, article shell keeps the required industrial framing, and the metadata block is reorganized into a cohesive header section.
+- Strengthened legal markdown typography via route-local prose utilities so body copy remains Inter-oriented while headings use monospace technical treatment aligned with Smidhus visual identity.
+- Validation completed from project root: `pnpm test -- tests/legal-routing.test.tsx` and `pnpm lint && pnpm typecheck` pass.
+
+## T014 Audit
+
+- Validation executed from the project root using the blueprint pipeline: `pnpm lint && pnpm typecheck && pnpm test && pnpm build`.
+- `pnpm lint`, `pnpm typecheck`, the full test suite, and `pnpm build` all completed successfully, but the run was not fully clean.
+- `pnpm test` emitted a React warning on stderr from `tests/navbar-layout.test.tsx`: `Received true for a non-boolean attribute priority.` Under the gatekeeper protocol, this means the validation output is not fully green.
+- The warning source is still present in the codebase in at least two render paths: `src/app/components/Navbar.tsx:41` and `src/app/components/TechnicalSpecsExperience.tsx:161`, where `priority` is being passed through a mocked DOM render path.
+- `pnpm build` also emitted a Node runtime warning during `next build`: `ExperimentalWarning: Type Stripping is an experimental feature and might change at any time`.
+- Broken audit criterion: T014 cannot be approved or archived until the validation output is clean and warning-free.
+- Builder follow-up: eliminate the leaking `priority` warning in the tested image render paths, confirm whether the Node experimental warning is expected/acceptable in this environment, and rerun the full blueprint pipeline until stdout and stderr are clean.
