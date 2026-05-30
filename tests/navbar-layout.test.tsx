@@ -20,13 +20,13 @@ describe("global navbar", () => {
 
     expect(markup).toContain("<nav");
     expect(markup).toContain("backdrop-blur-md");
-    expect(markup).toContain("bg-[#1c2125]/80");
+    expect(markup).toContain("bg-[#1c2125]/85");
     expect(markup).toContain("border-b");
     expect(markup).toContain("border-[#1F242C]");
     expect(markup).toContain('src="/smidhus_logo.svg"');
     expect(markup).toContain('width="32"');
     expect(markup).toContain('height="32"');
-    expect(markup).toContain('alt="Smidhus Logo"');
+    expect(markup).toContain('alt=""');
     expect(markup).toContain("SMIDHUS");
     expect(markup).toContain("font-mono");
     expect(markup).toContain("tracking-wider");
@@ -38,11 +38,10 @@ describe("global navbar", () => {
     const markup = renderToStaticMarkup(<Navbar />);
 
     expect(markup).toContain('type="button"');
-    expect(markup).toContain('aria-label="Toggle navigation menu"');
+    expect(markup).toContain('aria-label="Open navigation menu"');
     expect(markup).toContain('aria-expanded="false"');
     expect(markup).toContain("md:hidden");
     expect(markup).toContain("focus-visible:outline");
-    expect(markup).toContain("focus-visible:outline-[#D38B5b]");
   });
 
   it("starts with a closed mobile menu and a three-line icon", async () => {

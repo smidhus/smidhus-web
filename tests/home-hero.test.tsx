@@ -19,14 +19,12 @@ describe("home hero presentation", () => {
     expect(markup).toContain("items-center");
   });
 
-  it("renders the exact uppercase headline with READY SOON in forge orange", async () => {
+  it("renders the exact uppercase headline", async () => {
     const { default: Home } = await import("../src/app/page");
     const markup = renderToStaticMarkup(<Home />);
 
-    expect(markup).toContain(
-      "WE ARE BUSY FORGING, DO NOT DISTURB... <span class=\"text-[#D38B5b]\">READY SOON!</span>",
-    );
-    expect(markup).toContain("text-[#D38B5b]");
+    expect(markup).toContain("BUSY FORGING REAL SOFTWARE.");
+    expect(markup).toContain("DO NOT DISTURB THE BUILD.");
     expect(markup).toContain("font-mono");
   });
 
@@ -35,7 +33,7 @@ describe("home hero presentation", () => {
     const markup = renderToStaticMarkup(<Home />);
 
     expect(markup).toContain(
-      "Rephora and other Smidhus projects in development.",
+      "Independent software foundry building backend systems, cloud-ready"
     );
     expect(markup).toContain("font-sans");
   });
@@ -46,7 +44,7 @@ describe("home hero presentation", () => {
 
     expect(markup).toContain("pointer-events-none");
     expect(markup).toContain(
-      "background-image:radial-gradient(circle, rgba(255,107,0,0.30) 0%, transparent 60%)",
+      "background-image:radial-gradient(circle, rgba(255,107,0,0.30) 0%, transparent 60%)"
     );
   });
 
@@ -60,14 +58,14 @@ describe("home hero presentation", () => {
     expect(markup).toContain("relative z-20");
   });
 
-  it("renders SERVICES and PORTFOLIO action links with dashed style", async () => {
+  it("renders VIEW THE FORGE and OPEN COMMS action links with dashed style", async () => {
     const { default: Home } = await import("../src/app/page");
     const markup = renderToStaticMarkup(<Home />);
 
-    expect(markup).toContain('href="#services"');
-    expect(markup).toContain('href="#portfolio"');
-    expect(markup).toContain(">SERVICES</a>");
-    expect(markup).toContain(">PORTFOLIO</a>");
+    expect(markup).toContain('href="#forge-output"');
+    expect(markup).toContain('href="#comms"');
+    expect(markup).toContain(">VIEW THE FORGE</a>");
+    expect(markup).toContain(">OPEN COMMS</a>");
     expect(markup).toContain("border-dashed");
     expect(markup).toContain("ease-in-out");
     expect(markup).toContain("flex-wrap");

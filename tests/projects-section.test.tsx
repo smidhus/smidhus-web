@@ -14,8 +14,8 @@ describe("forge output products section", () => {
     const { default: Home } = await import("../src/app/page");
     const markup = renderToStaticMarkup(<Home />);
 
-    expect(markup).toContain('id="projects"');
-    expect(markup).toContain("[THE FORGE OUTPUT]");
+    expect(markup).toContain('id="forge-output"');
+    expect(markup).toContain("[PRODUCTS FROM THE FORGE]");
   });
 
   it("uses responsive grid classes for one-column mobile and two-column desktop", async () => {
@@ -32,12 +32,12 @@ describe("forge output products section", () => {
     const markup = renderToStaticMarkup(<Home />);
 
     expect(markup).toContain("REPHORA");
-    expect(markup).toContain("STATUS: STABLE // BETA ACCESS");
-    expect(markup).toContain("Cognitive Flashcard Engine powered by LLM Feedbacks");
+    expect(markup).toContain("STATUS: BETA // PRODUCT BUILD");
+    expect(markup).toContain("A learning platform for structured study sessions, concept memorization, progress tracking, and AI-assisted feedback.");
 
-    expect(markup).toContain("SMIDHUS-HARNESS");
-    expect(markup).toContain("STATUS: IN DEVELOPMENT // OPEN SOURCE");
-    expect(markup).toContain("SDD (Spec-Driven Development) Framework for AI-Assisted Workflows");
+    expect(markup).toContain("SMIDHUS-SDD-HARNESS");
+    expect(markup).toContain("STATUS: LIVE // DEVTOOL CLI");
+    expect(markup).toContain("A Go-based CLI devtool for Spec-Driven Development workflows. It uses opencode as a bridge to the user’s own AI providers.");
   });
 
   it("renders a centered technical specs call-to-action in each card with visible interaction states", async () => {
@@ -57,6 +57,6 @@ describe("forge output products section", () => {
     expect(markup).toContain("bg-[#0A0D10]/40");
     expect(markup).toContain("border-[#1F242C]");
     expect(markup).toContain("shadow-[0_0_30px_rgba(255,107,0,0.03)]");
-    expect(markup).toContain("hover:shadow-[0_0_30px_rgba(255,107,0,0.25)]");
+    expect(markup).toContain("hover:shadow-[0_0_30px_rgba(255,107,0,0.22)]");
   });
 });

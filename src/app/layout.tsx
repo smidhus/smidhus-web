@@ -16,7 +16,18 @@ const firaCode = Fira_Code({
 
 export const metadata: Metadata = {
   title: "Smidhus",
-  description: "Smidhus web presence",
+  description:
+    "Independent software foundry building backend systems, cloud-ready platforms, automations, and digital products.",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.svg?v=3",
+        type: "image/svg+xml",
+      },
+    ],
+    shortcut: "/favicon.svg?v=3",
+    apple: "/apple-touch-icon.png?v=3",
+  },
 };
 
 export default function RootLayout({
@@ -27,9 +38,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${firaCode.variable} h-full antialiased`}
+      className={`${inter.variable} ${firaCode.variable} h-full scroll-smooth antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-full flex-col">
         <Navbar />
         <main className="flex flex-1 flex-col">{children}</main>
         <Footer />

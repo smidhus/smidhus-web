@@ -59,11 +59,11 @@ describe("technical drawer", () => {
 
   it("resolves mapped product specs asynchronously", async () => {
     const rephora = await loadTechnicalSpec("REPHORA");
-    const harness = await loadTechnicalSpec("SMIDHUS-HARNESS");
+    const harness = await loadTechnicalSpec("SMIDHUS-SDD-HARNESS");
     const unknown = await loadTechnicalSpec("UNKNOWN");
 
     expect(rephora?.name).toBe("REPHORA");
-    expect(harness?.name).toBe("SMIDHUS-HARNESS");
+    expect(harness?.name).toBe("SMIDHUS-SDD-HARNESS");
     expect(unknown).toBeNull();
   });
 });

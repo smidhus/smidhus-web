@@ -9,33 +9,40 @@ import TechnicalDrawer, { type TechnicalSpec } from "./TechnicalDrawer";
 const PRODUCTS = [
   {
     name: "REPHORA",
-    status: "STATUS: STABLE // BETA ACCESS",
-    description: "Cognitive Flashcard Engine powered by LLM Feedbacks",
+    status: "STATUS: BETA // PRODUCT BUILD",
+    description:
+      "A learning platform for structured study sessions, concept memorization, progress tracking, and AI-assisted feedback.",
   },
   {
-    name: "SMIDHUS-HARNESS",
-    status: "STATUS: IN DEVELOPMENT // OPEN SOURCE",
-    description: "SDD (Spec-Driven Development) Framework for AI-Assisted Workflows",
+    name: "SMIDHUS-SDD-HARNESS",
+    status: "STATUS: LIVE // DEVTOOL CLI",
+    description:
+      "A Go-based CLI devtool for Spec-Driven Development workflows. It uses opencode as a bridge to the user’s own AI providers.",
   },
 ] as const;
 
-const SYSTEM_BLOCKS = [
+const CORE_CRAFT_BLOCKS = [
   {
-    title: "AI ARCH",
+    title: "BACKEND SYSTEMS",
     description:
-      "Streaming inference flows are orchestrated with strict validation protocols so each response stage remains observable, auditable, and safe under production load.",
+      "APIs, data models, business rules, integrations, and service layers designed to survive real production usage.",
   },
   {
-    title: "SDD MENTALITY",
+    title: "PRODUCT ENGINEERING",
     description:
-      "Spec-Driven Development constrains LLM behavior through deterministic simulation environments, reducing hallucinations before changes reach runtime systems.",
+      "From product idea to usable software: scope, flows, architecture, trade-offs, implementation strategy, and delivery execution.",
   },
   {
-    title: "EDGE RUNTIME",
+    title: "CLOUD & AUTOMATION",
     description:
-      "Distributed execution on Vercel Edge keeps latency near sub-100ms for critical interactions while preserving globally consistent delivery characteristics.",
+      "Cloud-ready services, deployment pipelines, background jobs, integrations, and operational workflows built for maintainable systems.",
   },
-];
+  {
+    title: "SDD WORKFLOWS",
+    description:
+      "Spec-driven engineering workflows using structured agents, validation gates, documentation, and repeatable build processes.",
+  },
+] as const;
 
 type ProductId = (typeof PRODUCTS)[number]["name"];
 
@@ -44,35 +51,35 @@ export const TECHNICAL_SPECS: Record<ProductId, TechnicalSpec> = {
     productId: "REPHORA",
     name: "REPHORA",
     summary:
-      "Adaptive cognitive flashcard engine that calibrates review cadence from model-generated confidence and user correction signals.",
+      "Adaptive learning platform that helps users study, memorize concepts, track progress, and receive AI-assisted feedback.",
     architecture: [
-      "Ingestion pipeline scores prompts and answers with structured grading phases.",
-      "Review scheduler computes spaced repetition windows from feedback volatility.",
-      "Audit logs preserve rationale traces for each revision decision.",
+      "Study sessions organize questions, answers, feedback, and progress signals.",
+      "Review logic prioritizes concepts based on user performance and learning progress.",
+      "Audit-friendly records preserve attempts, scores, and feedback history for continuous improvement.",
     ],
     promptStrategy: [
-      "Use constrained templates with schema validation for every generated hint.",
-      "Enforce source-grounded answer feedback before updating card memory state.",
-      "Fallback to deterministic hints when model confidence falls below threshold.",
+      "Use constrained templates with schema validation for generated feedback.",
+      "Evaluate user answers against expected definitions and learning goals.",
+      "Fallback to deterministic feedback when model confidence is not strong enough.",
     ],
-    codeSample: `type ReviewSignal = {\n  cardId: string;\n  confidence: number;\n  corrected: boolean;\n};\n\nexport function computeNextWindow(signal: ReviewSignal): number {\n  const base = signal.corrected ? 2 : 1;\n  const confidenceFactor = Math.max(1, Math.floor(signal.confidence * 3));\n\n  return base * confidenceFactor;\n}`,
+    codeSample: `type ReviewSignal = {\n  questionId: string;\n  score: number;\n  corrected: boolean;\n};\n\nexport function computeNextPriority(signal: ReviewSignal): number {\n  const correctionWeight = signal.corrected ? 2 : 1;\n  const scoreWeight = Math.max(1, 5 - Math.floor(signal.score));\n\n  return correctionWeight * scoreWeight;\n}`,
   },
-  "SMIDHUS-HARNESS": {
-    productId: "SMIDHUS-HARNESS",
-    name: "SMIDHUS-HARNESS",
+  "SMIDHUS-SDD-HARNESS": {
+    productId: "SMIDHUS-SDD-HARNESS",
+    name: "SMIDHUS-SDD-HARNESS",
     summary:
-      "Spec-Driven Development harness that executes requirement simulation loops before implementation reaches merge-ready status.",
+      "Go-based CLI devtool that brings Spec-Driven Development workflows to opencode through reusable agents, validation gates, and customizable skills.",
     architecture: [
-      "Task graph parser links requirements, design, and implementation checkpoints.",
-      "Agent orchestration layer enforces test-first contracts and validation gates.",
-      "History ledger captures technical deltas for reproducible review cycles.",
+      "CLI layer executes project workflows, templates, and command orchestration.",
+      "Agent templates define specialized responsibilities for architecture, building, validation, documentation, cloud, and design.",
+      "Skill extensions allow workflows to be improved with reusable domain-specific instructions and capabilities.",
     ],
     promptStrategy: [
-      "Prompt contracts bind every coding step to explicit requirement identifiers.",
-      "Reasoning instructions isolate unknowns and block unsupported assumptions.",
-      "Verification prompts run lint, typecheck, and scenario tests before completion.",
+      "Prompt contracts bind every coding step to explicit requirements and expected outputs.",
+      "Agent roles isolate responsibilities to reduce ambiguity and improve execution quality.",
+      "Validation prompts run review, gatekeeping, and documentation checks before completion.",
     ],
-    codeSample: `type TaskSpec = {\n  id: string;\n  requirements: string[];\n};\n\nexport async function executeSpec(task: TaskSpec): Promise<boolean> {\n  if (task.requirements.length === 0) return false;\n\n  await Promise.resolve();\n  return true;\n}`,
+    codeSample: `type HarnessAgent = {\n  name: string;\n  role: "architect" | "builder" | "gatekeeper" | "documenter" | "cloud" | "designer";\n  skills: string[];\n};\n\nexport function canExecute(agent: HarnessAgent): boolean {\n  return agent.name.length > 0 && agent.skills.length > 0;\n}`,
   },
 };
 
@@ -87,12 +94,25 @@ export default function TechnicalSpecsExperience() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSpec, setSelectedSpec] = useState<TechnicalSpec | null>(null);
 
+  const framedSurfaceClass =
+    "border border-[#1F242C] bg-[#0A0D10]/40 shadow-[0_0_30px_rgba(255,107,0,0.03)] transition-all duration-300 ease-in-out hover:shadow-[0_0_30px_rgba(255,107,0,0.22)]";
+
+  const primaryActionClass =
+    "min-w-40 border border-dashed border-[#1F242C] bg-[#0A0D10]/40 px-6 py-3 text-center font-mono text-sm font-semibold tracking-[0.12em] text-zinc-300 transition-all duration-300 ease-in-out hover:border-[#FF6B00] hover:text-white hover:shadow-[0_0_24px_rgba(255,107,0,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]";
+
+  const secondaryActionClass =
+    "border border-dashed border-[#1F242C] bg-[#0A0D10]/40 px-6 py-3 text-center font-mono text-xs font-semibold tracking-[0.12em] text-smidhus-bone-dim shadow-[0_0_30px_rgba(255,107,0,0.03)] transition-all duration-300 ease-in-out hover:border-[#D38B5b] hover:text-smidhus-bone hover:shadow-[0_0_30px_rgba(255,107,0,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D38B5b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]";
+
   const handleOpenDrawer = async (productId: ProductId) => {
     setIsDrawerOpen(true);
     setIsLoading(true);
-    const payload = await loadTechnicalSpec(productId);
-    setSelectedSpec(payload);
-    setIsLoading(false);
+
+    try {
+      const payload = await loadTechnicalSpec(productId);
+      setSelectedSpec(payload);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCloseDrawer = () => {
@@ -101,15 +121,18 @@ export default function TechnicalSpecsExperience() {
     setSelectedSpec(null);
   };
 
-  const framedSurfaceClass =
-    "border border-[#1F242C] bg-[#0A0D10]/40 shadow-[0_0_30px_rgba(255,107,0,0.03)] transition-all duration-300 ease-in-out hover:shadow-[0_0_30px_rgba(255,107,0,0.25)]";
-
   return (
     <main className="relative isolate flex flex-1 flex-col overflow-hidden bg-[#0f1316]">
       <ForgeParticles />
 
-      <div className={isDrawerOpen ? "relative z-20 opacity-30 blur-sm pointer-events-none" : "relative z-20"}>
-        <section className="relative flex items-center justify-center px-6 py-16">
+      <div
+        className={
+          isDrawerOpen
+            ? "pointer-events-none relative z-20 opacity-30 blur-sm"
+            : "relative z-20"
+        }
+      >
+        <section className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center px-6 py-20">
           <div className="relative z-20 flex w-full max-w-5xl flex-col items-center gap-10 text-center">
             <div className="relative isolate flex items-center justify-center">
               <div
@@ -133,11 +156,12 @@ export default function TechnicalSpecsExperience() {
               <Image
                 src="/smidhus_character_logo.svg"
                 alt="Smidhus character artwork"
-                width={360}
-                height={360}
+                width={210}
+                height={297}
                 priority
-                className="relative z-10 h-auto w-[280px] object-contain sm:w-[320px] md:w-[360px]"
+                className="relative z-10 h-auto w-[260px] object-contain sm:w-[320px] md:w-[360px]"
                 style={{
+                  height: "auto",
                   filter:
                     "drop-shadow(0 0 1px rgba(10,13,16,0.95)) drop-shadow(0 0 2px rgba(10,13,16,0.85)) drop-shadow(0 18px 36px rgba(0,0,0,0.45)) drop-shadow(0 0 28px rgba(255,107,0,0.25))",
                 }}
@@ -146,36 +170,37 @@ export default function TechnicalSpecsExperience() {
 
             <div className="flex max-w-3xl flex-col items-center gap-5">
               <h1 className="font-mono text-2xl font-bold uppercase tracking-[0.08em] text-smidhus-bone sm:text-3xl md:text-4xl">
-                WE ARE BUSY FORGING, DO NOT DISTURB...{" "}
-                <span className="text-[#D38B5b]">READY SOON!</span>
+                BUSY FORGING REAL SOFTWARE.
+                <br />
+                DO NOT DISTURB THE BUILD.
               </h1>
 
-              <p className="font-sans max-w-2xl text-base text-smidhus-bone-dim sm:text-lg">
-                Rephora and other Smidhus projects in development.
+              <p className="max-w-2xl font-sans text-base leading-relaxed text-smidhus-bone-dim sm:text-lg">
+                Independent software foundry building backend systems, cloud-ready
+                platforms, automations, and digital products.
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-                <a
-                  href="#services"
-                  className="min-w-40 border border-dashed border-[#1F242C] bg-[#0A0D10]/40 px-6 py-3 text-center font-mono text-sm font-semibold tracking-[0.12em] text-smidhus-bone-dim transition-all duration-300 ease-in-out hover:border-[#D38B5b] hover:text-smidhus-bone hover:shadow-[0_0_24px_rgba(255,107,0,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D38B5b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]"
-                >
-                  SERVICES
+                <a href="#forge-output" className={primaryActionClass}>
+                  VIEW THE FORGE
                 </a>
 
-                <a
-                  href="#portfolio"
-                  className="min-w-40 border border-dashed border-[#1F242C] bg-[#0A0D10]/40 px-6 py-3 text-center font-mono text-sm font-semibold tracking-[0.12em] text-smidhus-bone-dim transition-all duration-300 ease-in-out hover:border-[#D38B5b] hover:text-smidhus-bone hover:shadow-[0_0_24px_rgba(255,107,0,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D38B5b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]"
-                >
-                  PORTFOLIO
+                <a href="#comms" className={primaryActionClass}>
+                  OPEN COMMS
                 </a>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="projects" className="relative z-20 px-6 pb-20 pt-6">
+        <section
+          id="forge-output"
+          className="relative z-20 scroll-mt-24 px-6 pb-20 pt-6"
+        >
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
-            <h2 className="font-mono text-xl font-bold uppercase tracking-[0.1em] text-smidhus-bone sm:text-2xl">[THE FORGE OUTPUT]</h2>
+            <h2 className="font-mono text-xl font-bold uppercase tracking-[0.1em] text-smidhus-bone sm:text-2xl">
+              [PRODUCTS FROM THE FORGE]
+            </h2>
 
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
               {PRODUCTS.map((product) => (
@@ -184,19 +209,24 @@ export default function TechnicalSpecsExperience() {
                   className={`${framedSurfaceClass} flex min-h-64 flex-col gap-5 p-6`}
                 >
                   <header className="space-y-3">
-                    <h3 className="font-mono text-xl font-bold tracking-[0.08em] text-smidhus-bone">{product.name}</h3>
+                    <h3 className="font-mono text-xl font-bold tracking-[0.08em] text-smidhus-bone">
+                      {product.name}
+                    </h3>
+
                     <p className="inline-flex border border-dashed border-[#1F242C] px-3 py-1 font-mono text-xs font-semibold tracking-[0.12em] text-smidhus-bone-dim">
                       {product.status}
                     </p>
                   </header>
 
-                  <p className="font-sans text-base leading-relaxed text-smidhus-bone-dim">{product.description}</p>
+                  <p className="font-sans text-base leading-relaxed text-smidhus-bone-dim">
+                    {product.description}
+                  </p>
 
                   <div className="mt-auto flex justify-center pt-2">
                     <button
                       type="button"
                       onClick={() => void handleOpenDrawer(product.name)}
-                      className="border border-dashed border-[#1F242C] bg-[#0A0D10]/40 px-6 py-3 text-center font-mono text-xs font-semibold tracking-[0.12em] text-smidhus-bone-dim shadow-[0_0_30px_rgba(255,107,0,0.03)] transition-all duration-300 ease-in-out hover:border-[#D38B5b] hover:text-smidhus-bone hover:shadow-[0_0_30px_rgba(255,107,0,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D38B5b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]"
+                      className={secondaryActionClass}
                     >
                       VIEW TECHNICAL SPECS
                     </button>
@@ -207,24 +237,135 @@ export default function TechnicalSpecsExperience() {
           </div>
         </section>
 
-        <section id="systems" className="relative z-20 px-6 pb-24 pt-4">
+        <section
+          id="core-craft"
+          className="relative z-20 scroll-mt-24 px-6 pb-24 pt-4"
+        >
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
             <h2 className="font-mono text-xl font-bold uppercase tracking-[0.1em] text-smidhus-bone sm:text-2xl">
-              [CORE STACK &amp; SYSTEMS]
+              [CORE CRAFT]
             </h2>
 
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-              {SYSTEM_BLOCKS.map((block) => (
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {CORE_CRAFT_BLOCKS.map((block) => (
                 <article
                   key={block.title}
                   className={`${framedSurfaceClass} flex min-h-64 flex-col gap-4 border-dashed p-6`}
                 >
-                  <h3 className="font-mono text-base font-bold tracking-[0.1em] text-[#D38B5b] sm:text-lg">{block.title}</h3>
+                  <h3 className="font-mono text-base font-bold tracking-[0.1em] text-[#D38B5b] sm:text-lg">
+                    {block.title}
+                  </h3>
 
-                  <p className="font-sans text-sm leading-relaxed text-smidhus-bone-dim sm:text-base">{block.description}</p>
+                  <p className="font-sans text-sm leading-relaxed text-smidhus-bone-dim sm:text-base">
+                    {block.description}
+                  </p>
                 </article>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section
+          id="the-smith"
+          className="relative z-20 scroll-mt-24 px-6 pb-24 pt-4"
+        >
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
+            <h2 className="font-mono text-xl font-bold uppercase tracking-[0.1em] text-smidhus-bone sm:text-2xl">
+              [THE SMITH]
+            </h2>
+
+            <article className={`${framedSurfaceClass} border-dashed p-6 sm:p-8`}>
+              <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+                <div className="flex flex-col gap-5">
+                  <p className="font-sans text-base leading-relaxed text-smidhus-bone-dim sm:text-lg">
+                    Smidhus is forged by Juan Zuluaga, a software engineer with
+                    11+ years of experience turning business problems into backend
+                    systems, cloud-ready platforms, automations, and digital
+                    products.
+                  </p>
+
+                  <p className="font-sans text-base leading-relaxed text-smidhus-bone-dim sm:text-lg">
+                    The work starts with product vision and ends with systems that
+                    can run, scale, and be maintained.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1">
+                  <div className="border border-dashed border-[#1F242C] bg-[#0A0D10]/40 p-4">
+                    <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-[#D38B5b]">
+                      EXPERIENCE
+                    </p>
+                    <p className="mt-2 font-mono text-sm leading-relaxed text-smidhus-bone-dim">
+                      11+ years building production software
+                    </p>
+                  </div>
+
+                  <div className="border border-dashed border-[#1F242C] bg-[#0A0D10]/40 p-4">
+                    <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-[#D38B5b]">
+                      FOCUS
+                    </p>
+                    <p className="mt-2 font-mono text-sm leading-relaxed text-smidhus-bone-dim">
+                      Backend, cloud, automation, architecture, and product delivery
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section
+          id="comms"
+          className="relative z-20 scroll-mt-24 px-6 pb-24 pt-4"
+        >
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
+            <h2 className="font-mono text-xl font-bold uppercase tracking-[0.1em] text-smidhus-bone sm:text-2xl">
+              [OPEN COMMS]
+            </h2>
+
+            <article className={`${framedSurfaceClass} border-dashed p-6 sm:p-8`}>
+              <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+                <div className="flex flex-col gap-5">
+                  <header className="space-y-3">
+                    <h3 className="font-mono text-base font-bold tracking-[0.1em] text-[#D38B5b] sm:text-lg">
+                      HAVE SOMETHING TO FORGE?
+                    </h3>
+                  </header>
+
+                  <p className="font-sans text-base leading-relaxed text-smidhus-bone-dim">
+                    Have a product idea, a backend problem, or an automation that
+                    should already exist?
+                  </p>
+
+                  <p className="font-sans text-base leading-relaxed text-smidhus-bone-dim">
+                    Send a signal. The forge is open for selected builds, technical
+                    consulting, integrations, and product engineering work.
+                  </p>
+                </div>
+
+                <div className="flex flex-col justify-center gap-5 border border-dashed border-[#1F242C] bg-[#0A0D10]/40 p-5">
+                  <div className="space-y-2">
+                    <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-[#D38B5b]">
+                      MAIL_GATEWAY
+                    </p>
+
+                    <a
+                      href="mailto:hello@smidhus.com"
+                      className="break-all font-mono text-base text-smidhus-bone transition-colors duration-300 hover:text-[#D38B5b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D38B5b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]"
+                    >
+                      hello@smidhus.com
+                    </a>
+                  </div>
+
+                  <a
+                    href="mailto:hello@smidhus.com"
+                    className={`${secondaryActionClass} inline-flex w-fit`}
+                  >
+                    SEND TRANSMISSION
+                  </a>
+                </div>
+              </div>
+            </article>
           </div>
         </section>
       </div>
