@@ -46,7 +46,7 @@ describe("forge output products section", () => {
 
     expect(markup.match(/VIEW TECHNICAL SPECS/g)?.length).toBe(2);
     expect(markup).toContain("justify-center");
-    expect(markup).toContain("hover:border-[#FF6B00]");
+    expect(markup).toContain("hover:border-[#D38B5b]");
     expect(markup).toContain("focus-visible:ring-2");
   });
 
@@ -57,6 +57,6 @@ describe("forge output products section", () => {
     expect(markup).toContain("bg-[#0A0D10]/40");
     expect(markup).toContain("border-[#1F242C]");
     expect(markup).toContain("shadow-[0_0_30px_rgba(255,107,0,0.03)]");
-    expect(markup).toContain("hover:shadow-[0_0_30px_rgba(255,107,0,0.12)]");
+    expect(markup).toContain("hover:shadow-[0_0_30px_rgba(255,107,0,0.25)]");
   });
 });

@@ -24,9 +24,9 @@ describe("home hero presentation", () => {
     const markup = renderToStaticMarkup(<Home />);
 
     expect(markup).toContain(
-      "WE ARE BUSY FORGING, DO NOT DISTURB... <span class=\"text-[#FF6B00]\">READY SOON!</span>",
+      "WE ARE BUSY FORGING, DO NOT DISTURB... <span class=\"text-[#D38B5b]\">READY SOON!</span>",
     );
-    expect(markup).toContain("text-[#FF6B00]");
+    expect(markup).toContain("text-[#D38B5b]");
     expect(markup).toContain("font-mono");
   });
 
@@ -46,7 +46,7 @@ describe("home hero presentation", () => {
 
     expect(markup).toContain("pointer-events-none");
     expect(markup).toContain(
-      "background-image:radial-gradient(circle, rgba(255,107,0,0.15) 0%, transparent 60%)",
+      "background-image:radial-gradient(circle, rgba(255,107,0,0.30) 0%, transparent 60%)",
     );
   });
 

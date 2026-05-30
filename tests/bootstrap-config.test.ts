@@ -9,7 +9,7 @@ describe("bootstrap configuration", () => {
       | Record<string, string>
       | undefined;
 
-    expect(colors?.smidhusBackground).toBe("#0A0D10");
+    expect(colors?.smidhusBackground).toBe("#0f1316");
     expect(colors?.smidhusForgeOrange).toBe("#FF6B00");
     expect(colors?.smidhusTerminalGreen).toBe("#00FF66");
     expect(colors?.smidhusBorder).toBe("#1F242C");

@@ -2,11 +2,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0a0d10;
-  --color-foreground: #e5e7eb;
+  --color-background: #0f1316;
+  --color-foreground: var(--color-smidhus-bone);
   --color-header: #1d2124;
   --font-sans: var(--font-inter);
   --font-mono: var(--font-fira-code);
+
+  --color-smidhus-bone: #EAE6DF;
+  --color-smidhus-bone-dim: #A39F95;
+  --color-smidhus-muted-orange: #D38B5B;
+  --color-smidhus-forge-orange: #FF6B00;
 }
 
 body {
@@ -14,4 +19,5 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-inter), sans-serif;
 }
+
 

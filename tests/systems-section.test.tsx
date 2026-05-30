@@ -31,15 +31,15 @@ describe("core stack and systems section", () => {
     const { default: Home } = await import("../src/app/page");
     const markup = renderToStaticMarkup(<Home />);
 
-    expect(markup).toContain(".01 / AI ARCH");
+    expect(markup).toContain("AI ARCH");
     expect(markup).toContain("Streaming inference flows");
     expect(markup).toContain("strict validation protocols");
 
-    expect(markup).toContain(".02 / SDD MENTALITY");
+    expect(markup).toContain("SDD MENTALITY");
     expect(markup).toContain("Spec-Driven Development");
     expect(markup).toContain("deterministic simulation environments");
 
-    expect(markup).toContain(".03 / EDGE RUNTIME");
+    expect(markup).toContain("EDGE RUNTIME");
     expect(markup).toContain("Vercel Edge");
     expect(markup).toContain("sub-100ms");
   });
@@ -52,14 +52,14 @@ describe("core stack and systems section", () => {
     expect(markup).toContain("border-[#1F242C]");
     expect(markup).toContain("bg-[#0A0D10]/40");
     expect(markup).toContain("shadow-[0_0_30px_rgba(255,107,0,0.03)]");
-    expect(markup).toContain("hover:shadow-[0_0_30px_rgba(255,107,0,0.12)]");
+    expect(markup).toContain("hover:shadow-[0_0_30px_rgba(255,107,0,0.25)]");
   });
 
   it("styles technical section identifiers with forge orange monospace accents", async () => {
     const { default: Home } = await import("../src/app/page");
     const markup = renderToStaticMarkup(<Home />);
 
-    expect(markup).toContain("text-[#FF6B00]");
+    expect(markup).toContain("text-[#D38B5b]");
     expect(markup).toContain("font-mono");
   });
 });

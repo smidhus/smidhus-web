@@ -13,13 +13,13 @@ const copyrightYear = 2026;
 const copyrightOwner = "smidhus dev";
 
 const linkClassName =
-  "transition-opacity duration-200 hover:opacity-80 focus-visible:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF6B00]";
+  "transition-opacity duration-200 hover:opacity-80 focus-visible:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D38B5b]";
 
 export default function Footer() {
   const copyright = `\u00A9 Copyright ${copyrightYear}, all ${copyrightOwner}`;
 
   return (
-    <footer className="border-t border-[#1F242C] px-6 py-4">
+    <footer className="border-t border-[#1F242C] bg-[#1c2125] px-6 py-4">
       <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[11px] tracking-wider text-zinc-500 font-mono md:justify-between">
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
           {legalLinks.map((link) => (

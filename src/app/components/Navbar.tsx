@@ -21,7 +21,7 @@ export default function Navbar() {
 
   return (
     <header>
-      <nav className="relative border-b border-[#1F242C] bg-[#0A0D10]/80 backdrop-blur-md">
+      <nav className="relative border-b border-[#1F242C] bg-[#1c2125]/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <Link href="/">
@@ -34,14 +34,14 @@ export default function Navbar() {
                 style={{ width: "auto", height: "32px" }}
               />
             </Link>
-            <span className="font-mono text-sm font-bold tracking-wider text-white">
+            <span className="font-mono text-sm font-bold tracking-wider text-smidhus-bone">
               SMIDHUS
             </span>
           </div>
 
           <button
             type="button"
-            className="flex h-10 w-10 items-center justify-center text-zinc-100 transition-colors hover:text-[#FF6B00] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF6B00] md:hidden"
+            className="flex h-10 w-10 items-center justify-center text-smidhus-bone transition-colors hover:text-[#D38B5b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D38B5b] md:hidden"
             aria-label="Toggle navigation menu"
             aria-expanded={isOpen}
             onClick={() => setIsOpen((previousValue) => !previousValue)}
@@ -62,7 +62,7 @@ export default function Navbar() {
         </div>
 
         {isOpen ? (
-          <div className="absolute top-16 left-0 z-50 flex w-full flex-col gap-5 border-b border-[#1F242C] bg-[#0A0D10]/95 p-6 backdrop-blur-lg md:hidden">
+          <div className="absolute top-16 left-0 z-50 flex w-full flex-col gap-5 border-b border-[#1F242C] bg-[#1c2125]/95 p-6 backdrop-blur-lg md:hidden">
             {mobileNavItems.map((item) => {
               if (item.external) {
                 return (
@@ -71,7 +71,7 @@ export default function Navbar() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-mono text-sm tracking-wider text-zinc-100 transition-colors hover:text-[#FF6B00] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF6B00]"
+                    className="font-mono text-sm tracking-wider text-smidhus-bone transition-colors hover:text-[#D38B5b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D38B5b]"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.label}
@@ -83,7 +83,7 @@ export default function Navbar() {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="font-mono text-sm tracking-wider text-zinc-100 transition-colors hover:text-[#FF6B00] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF6B00]"
+                  className="font-mono text-sm tracking-wider text-smidhus-bone transition-colors hover:text-[#D38B5b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D38B5b]"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
