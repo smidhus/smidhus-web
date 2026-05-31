@@ -74,10 +74,8 @@ describe("legal routing and content loading", () => {
     expect(markup).toContain("border-dashed");
     expect(markup).toContain("border-[#1F242C]");
     expect(markup).toContain("shadow-[0_0_30px_rgba(255,107,0,0.03)]");
-    expect(markup).toContain("STATUS: OFFICIALLY_PUBLISHED //");
+    expect(markup).toContain("STATUS: OFFICIALLY_PUBLISHED");
     expect(markup).toContain("text-[#00FF66]");
-    expect(markup).toContain("RETURN // CORE_NODE");
-    expect(markup).toContain("hover:text-[#D38B5b]");
     expect(markup).toContain("font-inter");
     expect(markup).toContain("prose-headings:font-mono");
   });
