@@ -114,17 +114,40 @@ These measures may include:
 
 No digital system can be guaranteed to be completely secure. However, Smidhus works to reduce unnecessary data exposure and maintain responsible operational practices.
 
-### 9. ACCOUNT DELETION AND DATA REMOVAL
+### 9. REPHORA ACCOUNT DELETION AND DATA REMOVAL
 
-When a Rephora user requests account deletion, Smidhus may first apply a soft-delete period.
+Rephora users can request deletion of their account and associated app data.
+
+Users can request account deletion in one of the following ways:
+
+1. From the Rephora app:
+   - Open Rephora.
+   - Go to Profile or Account Settings.
+   - Select Delete Account.
+   - Confirm the deletion request.
+
+2. By email:
+   - Send an email to admin@smidhus.com from the email address associated with your Rephora account.
+   - Use the subject: Rephora Account Deletion Request.
+
+When a deletion request is submitted, Smidhus may first apply a soft-delete period.
 
 During this period:
 
 * The account is marked for deletion.
 * The user is given a grace period of 10 days to restore the account.
-* The user may be asked whether they want to receive a report of their data before final deletion.
+* The user may request a report of their data before final deletion.
 
-After the 10-day grace period expires, Smidhus may trigger a deletion workflow to remove the user's records from application databases and authentication systems, including DynamoDB and AWS Cognito, unless retention is required by law, security needs, dispute resolution, or operational obligations.
+After the 10-day grace period expires, Smidhus may trigger a deletion workflow to remove the user's records from application databases and authentication systems, including DynamoDB and AWS Cognito.
+
+Data that may be deleted includes:
+
+* Account profile data.
+* Books, quizzes, flashcards, and study content.
+* Study sessions, answers, attempts, progress, XP, streaks, and related app activity.
+* Authentication records associated with the Rephora account.
+
+Some limited records may be retained if required by law, security needs, fraud prevention, dispute resolution, or operational obligations.
 
 ### 10. USER RIGHTS
 

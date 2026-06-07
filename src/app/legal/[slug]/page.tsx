@@ -62,9 +62,15 @@ export default async function LegalPage({ params }: LegalPageProps) {
                 h2: ({ ...props }) => (
                   <h2 className="font-mono text-xl font-bold text-smidhus-bone mt-8 mb-4 uppercase tracking-wide" {...props} />
                 ),
-                h3: ({ ...props }) => (
-                  <h3 className="font-mono text-base md:text-lg font-bold tracking-[0.1em] text-[#D38B5b] mt-8 mb-4 uppercase" {...props} />
-                ),
+                h3: ({ children, ...props }) => {
+                  const text = typeof children === "string" ? children : Array.isArray(children) ? children.join("") : "";
+                  const id = text.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-");
+                  return (
+                    <h3 id={id} className="font-mono text-base md:text-lg font-bold tracking-[0.1em] text-[#D38B5b] mt-8 mb-4 uppercase scroll-mt-24" {...props}>
+                      {children}
+                    </h3>
+                  );
+                },
                 p: ({ ...props }) => (
                   <p className="font-sans text-sm md:text-base leading-relaxed text-smidhus-bone-dim mb-5" {...props} />
                 ),
