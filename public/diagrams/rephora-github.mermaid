@@ -1,0 +1,112 @@
+flowchart LR
+    subgraph repos["Rephora project directories"]
+        direction TB
+        infraRepo["rephora_infra<br/>OpenTofu IaC"]
+        apiRepo["rephora_api<br/>Spring Boot backend"]
+        appRepo["rephora_app<br/>Flutter mobile client"]
+    end
+
+    subgraph infra["Infrastructure delivery"]
+        direction TB
+        infraPR["1 PR to main"]
+        tofuPlan["2 tofu fmt / init / plan<br/>Gemini Cloud review"]
+        tofuDev["3 Merge main<br/>apply DEV<br/>delete guard"]
+        tofuProd["4 Manual PROD dispatch<br/>apply PROD<br/>delete guard"]
+
+        infraPR --> tofuPlan
+        tofuPlan --> tofuDev
+        tofuPlan --> tofuProd
+    end
+
+    subgraph backend["Backend delivery"]
+        direction TB
+        apiPR["1 PR to develop / main"]
+        apiQuality["2 Gradle check<br/>Trivy scan<br/>Gemini Tech Lead"]
+        apiDev["3 Push develop<br/>build JAR + Docker image"]
+        apiProd["4 SemVer tag / manual PROD<br/>promote dev:latest"]
+
+        apiPR --> apiQuality
+        apiQuality --> apiDev
+        apiDev --> apiProd
+    end
+
+    subgraph mobile["Mobile Android delivery"]
+        direction TB
+        appMain["1 Push main / manual"]
+        appConfig["2 AWS OIDC<br/>read SSM mobile config"]
+        appBuild["3 build_runner<br/>dart analyze<br/>signed AAB"]
+        appUpload["4 GCP WIF<br/>upload Play Internal"]
+
+        appMain --> appConfig
+        appConfig --> appBuild
+        appBuild --> appUpload
+    end
+
+    subgraph auth["Credential model"]
+        direction TB
+        awsOidc["AWS OIDC roles<br/>infra + mobile SSM"]
+        awsKeys["AWS access keys<br/>GitHub Secrets<br/>backend only"]
+        gcpWif["GCP Workload Identity<br/>Play upload"]
+    end
+
+    subgraph aws["AWS delivery targets"]
+        direction TB
+        infraAws["AWS infrastructure<br/>OpenTofu-managed resources"]
+        ecrDev["ECR dev<br/>rephora-api-dev<br/>sha + latest"]
+        ecrProd["ECR prod<br/>rephora-api-prod<br/>version + latest"]
+        ssm["AWS SSM<br/>Send-Command"]
+        ec2Dev["EC2 dev<br/>dev.api.rephora.app"]
+        ec2Prod["EC2 prod<br/>api.rephora.app"]
+        mobileSsm["SSM Parameter Store<br/>/rephora/prod/mobile"]
+    end
+
+    subgraph google["Google target"]
+        direction TB
+        play["Google Play Console<br/>Internal track"]
+    end
+
+    infraRepo --> infraPR
+    apiRepo --> apiPR
+    appRepo --> appMain
+
+    tofuPlan -->|"OIDC assume role"| awsOidc
+    tofuDev --> infraAws
+    tofuProd --> infraAws
+
+    apiDev -->|"static AWS secrets"| awsKeys
+    apiProd -->|"static AWS secrets"| awsKeys
+    apiDev -->|"push image"| ecrDev
+    ecrDev -->|"SSM deploy command"| ssm
+    ssm --> ec2Dev
+    apiProd -->|"pull dev latest<br/>retag version"| ecrProd
+    ecrProd -->|"SSM deploy command"| ssm
+    ssm --> ec2Prod
+
+    appConfig -->|"OIDC assume role"| awsOidc
+    appConfig -->|"fetch encrypted config"| mobileSsm
+    appUpload -->|"federated auth"| gcpWif
+    gcpWif --> play
+
+    classDef repoNode fill:#101418,stroke:#8A7657,stroke-width:1.4px,color:#F4F1E8
+    classDef infraNode fill:#17130E,stroke:#D38B5B,stroke-width:1.4px,color:#F4F1E8
+    classDef backendNode fill:#101A12,stroke:#7AA66A,stroke-width:1.4px,color:#F4F1E8
+    classDef mobileNode fill:#102026,stroke:#4FB7C5,stroke-width:1.4px,color:#F4F1E8
+    classDef authNode fill:#171322,stroke:#A98FD4,stroke-width:1.4px,color:#F4F1E8
+    classDef awsNode fill:#151B20,stroke:#D9A45F,stroke-width:1.4px,color:#F4F1E8
+    classDef googleNode fill:#0E171C,stroke:#4FB7C5,stroke-width:1.4px,color:#F4F1E8
+
+    class infraRepo,apiRepo,appRepo repoNode
+    class infraPR,tofuPlan,tofuDev,tofuProd infraNode
+    class apiPR,apiQuality,apiDev,apiProd backendNode
+    class appMain,appConfig,appBuild,appUpload mobileNode
+    class awsOidc,awsKeys,gcpWif authNode
+    class infraAws,ecrDev,ecrProd,ssm,ec2Dev,ec2Prod,mobileSsm awsNode
+    class play googleNode
+
+    style repos fill:#070A0B,stroke:#8A7657,stroke-width:1.5px,color:#F4F1E8
+    style infra fill:#17100A,stroke:#D38B5B,stroke-width:1.5px,color:#F4F1E8
+    style backend fill:#0B120D,stroke:#7AA66A,stroke-width:1.5px,color:#F4F1E8
+    style mobile fill:#0A1114,stroke:#4FB7C5,stroke-width:1.5px,color:#F4F1E8
+    style auth fill:#100D17,stroke:#A98FD4,stroke-width:1.5px,color:#F4F1E8
+    style aws fill:#11161A,stroke:#D9A45F,stroke-width:1.5px,color:#F4F1E8
+    style google fill:#091116,stroke:#4FB7C5,stroke-width:1.5px,color:#F4F1E8

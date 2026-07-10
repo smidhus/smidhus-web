@@ -1,0 +1,38 @@
+sequenceDiagram
+    autonumber
+
+    box rgba(31, 67, 77, 0.35) Rephora Mobile Client
+        participant App as Flutter App
+    end
+
+    box rgba(34, 66, 41, 0.35) Spring Boot Monolith
+        participant API as GraphQL API
+        participant Consumer as Aggregation Consumer
+    end
+
+    box rgba(90, 63, 30, 0.30) AWS Messaging
+        participant SNS as SNS update-aggregations
+        participant SQS as SQS update-aggregations
+    end
+
+    box rgba(77, 57, 98, 0.22) DynamoDB Aggregates
+        participant DB as DynamoDB tables
+    end
+
+    rect rgba(244, 241, 232, 0.07)
+        Note over App,DB: In-session progress sync keeps aggregate writes out of the request path
+        App->>API: syncSessionProgress(sessionId, attempts)
+        API->>DB: study-sessions: append new attempts
+        API->>SNS: Publish EndStudySessionMessage
+        SNS->>SQS: Fan out raw payload to one durable queue
+        API-->>App: Progress accepted
+    end
+
+    rect rgba(224, 169, 109, 0.08)
+        Note over SQS,DB: Scheduled async worker updates learning aggregates
+        Consumer->>SQS: Scheduled poll
+        SQS-->>Consumer: Aggregation message
+        Consumer->>DB: questions: attempts, scoreSum, correctCount
+        Consumer->>DB: quizzes: aggregate attempts and score
+        Consumer->>DB: books: aggregate attempts and score when linked
+    end

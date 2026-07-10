@@ -1,0 +1,60 @@
+sequenceDiagram
+    autonumber
+
+    box rgba(31, 67, 77, 0.35) Rephora Mobile Client
+        participant App as Flutter App
+    end
+
+    box rgba(34, 66, 41, 0.35) Spring Boot Monolith
+        participant API as GraphQL API
+        participant Worker as Scheduled SQS Consumer
+        participant Notify as NotifyFlashcardsReady
+    end
+
+    box rgba(90, 63, 30, 0.30) AWS Messaging
+        participant SNS as SNS ai_questions
+        participant SQS as SQS ai_questions_queue
+    end
+
+    box rgba(77, 57, 98, 0.30) AI Provider
+        participant DeepSeek as DeepSeek API
+    end
+
+    box rgba(77, 57, 98, 0.22) DynamoDB
+        participant DB as DynamoDB tables
+    end
+
+    box rgba(31, 67, 77, 0.22) Firebase
+        participant FCM as Firebase FCM
+    end
+
+    rect rgba(244, 241, 232, 0.07)
+        Note over App,DB: Fast request path: accept the generation job without waiting for the LLM
+        App->>API: Generate quiz mutation
+        API->>DB: jobs: create job with status PENDING
+        API->>SNS: Publish ai_questions payload
+        SNS->>SQS: Fan out raw message to durable queue
+        API-->>App: Return jobId while job remains PENDING
+    end
+
+    rect rgba(224, 169, 109, 0.08)
+        Note over SQS,DB: Background path: durable polling, generation, persistence, and status transition
+        Worker->>SQS: Scheduled poll
+        SQS-->>Worker: Generation request message
+        Worker->>DB: jobs: mark job RUNNING
+        Worker->>DB: questions: query existing quiz questions for canonical exclusion
+        DB-->>Worker: Existing question text set
+        Worker->>DeepSeek: Request structured JSON question generation
+        DeepSeek-->>Worker: JSON response payload
+
+        alt JSON parses and generated questions are valid
+            Worker->>DB: questions: persist generated questions
+            Worker->>DB: quizzes: update generation metadata
+            Worker->>DB: jobs: mark job COMPLETED
+            Worker->>Notify: Dispatch flashcards-ready event
+            Notify->>FCM: Send data message with jobId and quizId
+            FCM-->>App: Flashcards ready push notification
+        else DeepSeek, parsing, validation, or persistence fails
+            Worker->>DB: jobs: mark job FAILED with error detail
+        end
+    end

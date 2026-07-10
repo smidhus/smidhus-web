@@ -1,0 +1,56 @@
+sequenceDiagram
+    autonumber
+
+    box rgba(31, 67, 77, 0.35) Rephora Mobile Client
+        participant App as Flutter App
+    end
+
+    box rgba(34, 66, 41, 0.35) Spring Boot Monolith
+        participant API as GraphQL API
+    end
+
+    box rgba(90, 63, 30, 0.30) AWS Serverless
+        participant EventBridge as EventBridge every 10 min
+        participant Gardener as rephora-gardener Lambda Python 3.12
+    end
+
+    box rgba(77, 57, 98, 0.22) DynamoDB
+        participant Users as users table and gsi_deleted_at
+        participant Data as user-owned tables
+    end
+
+    rect rgba(244, 241, 232, 0.07)
+        Note over App,Users: Deletion request stores markers and does not purge synchronously
+        App->>API: requestDeletion(requestDataExport)
+        API->>Users: set deletedAt = now and requestDataExport = flag
+        API-->>App: Deletion scheduled with 10 day grace period
+        Note over Users: deletedAt is the only deletion marker.
+    end
+
+    rect rgba(31, 67, 77, 0.12)
+        Note over App,Users: Reactivation clears the marker before Gardener can purge
+        App->>API: requestReactivation
+        API->>Users: clear deletedAt and requestDataExport = false
+        API-->>App: Account reactivated
+    end
+
+    rect rgba(224, 169, 109, 0.08)
+        Note over EventBridge,Data: Gardener scans pending deletions and purges only expired accounts
+        EventBridge->>Gardener: Trigger scheduled run
+        Gardener->>Users: Scan gsi_deleted_at for users with deletedAt
+
+        loop Each soft deleted user
+            alt Grace period still active
+                Gardener->>Gardener: Skip until deletedAt age reaches 10 days
+            else Grace period expired
+                Gardener->>Data: study-sessions: delete by userId
+                Gardener->>Data: questions: delete by user scope
+                Gardener->>Data: quizzes: delete by userId
+                Gardener->>Data: books: delete by userId
+                Gardener->>Data: user-stats: delete by userId
+                Gardener->>Users: Delete user profile record
+            end
+        end
+
+        Note over Gardener: requestDataExport is future-ready only. No active SES export dispatch here.
+    end

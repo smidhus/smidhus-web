@@ -1,25 +1,62 @@
 "use client";
 
-import { useId, useState } from "react";
 import Image from "next/image";
 
 import ForgeParticles from "./ForgeParticles";
-import TechnicalDrawer, { type TechnicalSpec } from "./TechnicalDrawer";
 
-const PRODUCTS = [
+type ProductAction =
+  | {
+      label: string;
+      href: string;
+      external?: boolean;
+      variant?: "primary" | "secondary";
+      disabled?: false;
+    }
+  | {
+      label: string;
+      disabled: true;
+    };
+
+type ForgeProduct = {
+  name: string;
+  status: string;
+  description: string;
+  actions: ProductAction[];
+};
+
+const PRODUCTS: ForgeProduct[] = [
   {
     name: "REPHORA",
     status: "STATUS: BETA // PRODUCT BUILD",
     description:
       "A learning platform for structured study sessions, concept memorization, progress tracking, and AI-assisted feedback.",
+    actions: [
+      {
+        label: "PRODUCT SITE",
+        href: "https://rephora.app",
+        external: true,
+        variant: "primary",
+      },
+      {
+        label: "TECHNICAL LOG",
+        href: "/forge-logs/rephora-portal",
+        variant: "secondary",
+      },
+    ],
   },
   {
     name: "SMIDHUS-SDD-HARNESS",
     status: "STATUS: LIVE // DEVTOOL CLI",
     description:
       "A Go-based CLI devtool for Spec-Driven Development workflows. It uses opencode as a bridge to the user’s own AI providers.",
+    actions: [
+      {
+        label: "BUILDING",
+        disabled: true,
+      },
+    ],
   },
-] as const;
+];
 
 const CORE_CRAFT_BLOCKS = [
   {
@@ -64,56 +101,7 @@ const SMITH_PROFILE = {
   ],
 } as const;
 
-type ProductId = (typeof PRODUCTS)[number]["name"];
-
-export const TECHNICAL_SPECS: Record<ProductId, TechnicalSpec> = {
-  REPHORA: {
-    productId: "REPHORA",
-    name: "REPHORA",
-    summary:
-      "Adaptive learning platform that helps users study, memorize concepts, track progress, and receive AI-assisted feedback.",
-    architecture: [
-      "Study sessions organize questions, answers, feedback, and progress signals.",
-      "Review logic prioritizes concepts based on user performance and learning progress.",
-      "Audit-friendly records preserve attempts, scores, and feedback history for continuous improvement.",
-    ],
-    promptStrategy: [
-      "Use constrained templates with schema validation for generated feedback.",
-      "Evaluate user answers against expected definitions and learning goals.",
-      "Fallback to deterministic feedback when model confidence is not strong enough.",
-    ],
-    codeSample: `type ReviewSignal = {\n  questionId: string;\n  score: number;\n  corrected: boolean;\n};\n\nexport function computeNextPriority(signal: ReviewSignal): number {\n  const correctionWeight = signal.corrected ? 2 : 1;\n  const scoreWeight = Math.max(1, 5 - Math.floor(signal.score));\n\n  return correctionWeight * scoreWeight;\n}`,
-  },
-  "SMIDHUS-SDD-HARNESS": {
-    productId: "SMIDHUS-SDD-HARNESS",
-    name: "SMIDHUS-SDD-HARNESS",
-    summary:
-      "Go-based CLI devtool that brings Spec-Driven Development workflows to opencode through reusable agents, validation gates, and customizable skills.",
-    architecture: [
-      "CLI layer executes project workflows, templates, and command orchestration.",
-      "Agent templates define specialized responsibilities for architecture, building, validation, documentation, cloud, and design.",
-      "Skill extensions allow workflows to be improved with reusable domain-specific instructions and capabilities.",
-    ],
-    promptStrategy: [
-      "Prompt contracts bind every coding step to explicit requirements and expected outputs.",
-      "Agent roles isolate responsibilities to reduce ambiguity and improve execution quality.",
-      "Validation prompts run review, gatekeeping, and documentation checks before completion.",
-    ],
-    codeSample: `type HarnessAgent = {\n  name: string;\n  role: "architect" | "builder" | "gatekeeper" | "documenter" | "cloud" | "designer";\n  skills: string[];\n};\n\nexport function canExecute(agent: HarnessAgent): boolean {\n  return agent.name.length > 0 && agent.skills.length > 0;\n}`,
-  },
-};
-
-export async function loadTechnicalSpec(productId: string): Promise<TechnicalSpec | null> {
-  await Promise.resolve();
-  return TECHNICAL_SPECS[productId as ProductId] ?? null;
-}
-
 export default function TechnicalSpecsExperience() {
-  const titleId = useId();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedSpec, setSelectedSpec] = useState<TechnicalSpec | null>(null);
-
   const framedSurfaceClass =
     "border border-[#1F242C] bg-[#0A0D10]/40 shadow-[0_0_30px_rgba(255,107,0,0.03)] transition-all duration-300 ease-in-out hover:shadow-[0_0_30px_rgba(255,107,0,0.22)]";
 
@@ -123,35 +111,14 @@ export default function TechnicalSpecsExperience() {
   const secondaryActionClass =
     "border border-dashed border-[#1F242C] bg-[#0A0D10]/40 px-6 py-3 text-center font-mono text-xs font-semibold tracking-[0.12em] text-smidhus-bone-dim shadow-[0_0_30px_rgba(255,107,0,0.03)] transition-all duration-300 ease-in-out hover:border-[#D38B5b] hover:text-smidhus-bone hover:shadow-[0_0_30px_rgba(255,107,0,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D38B5b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]";
 
-  const handleOpenDrawer = async (productId: ProductId) => {
-    setIsDrawerOpen(true);
-    setIsLoading(true);
-
-    try {
-      const payload = await loadTechnicalSpec(productId);
-      setSelectedSpec(payload);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleCloseDrawer = () => {
-    setIsDrawerOpen(false);
-    setIsLoading(false);
-    setSelectedSpec(null);
-  };
+  const productActionClass =
+    "border border-[#D38B5b] bg-[#D38B5b]/12 px-6 py-3 text-center font-mono text-xs font-semibold tracking-[0.12em] text-smidhus-bone shadow-[0_0_24px_rgba(211,139,91,0.12)] transition-all duration-300 ease-in-out hover:bg-[#D38B5b]/20 hover:text-white hover:shadow-[0_0_30px_rgba(211,139,91,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D38B5b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0D10]";
 
   return (
     <main className="relative isolate flex flex-1 flex-col overflow-hidden bg-[#0f1316]">
       <ForgeParticles />
 
-      <div
-        className={
-          isDrawerOpen
-            ? "pointer-events-none relative z-20 opacity-30 blur-sm"
-            : "relative z-20"
-        }
-      >
+      <div className="relative z-20">
         <section className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center px-6 py-20">
           <div className="relative z-20 flex w-full max-w-5xl flex-col items-center gap-10 text-center">
             <div className="relative isolate flex items-center justify-center">
@@ -242,14 +209,32 @@ export default function TechnicalSpecsExperience() {
                     {product.description}
                   </p>
 
-                  <div className="mt-auto flex justify-center pt-2">
-                    <button
-                      type="button"
-                      onClick={() => void handleOpenDrawer(product.name)}
-                      className={secondaryActionClass}
-                    >
-                      VIEW TECHNICAL SPECS
-                    </button>
+                  <div className="mt-auto flex flex-wrap justify-center gap-3 pt-2">
+                    {product.actions.map((action) =>
+                      action.disabled ? (
+                        <span
+                          key={action.label}
+                          aria-disabled="true"
+                          className={`${secondaryActionClass} cursor-not-allowed opacity-55 hover:border-[#1F242C] hover:text-smidhus-bone-dim hover:shadow-[0_0_30px_rgba(255,107,0,0.03)]`}
+                        >
+                          {action.label}
+                        </span>
+                      ) : (
+                        <a
+                          key={action.label}
+                          href={action.href}
+                          target={action.external ? "_blank" : undefined}
+                          rel={action.external ? "noreferrer" : undefined}
+                          className={
+                            action.variant === "primary"
+                              ? productActionClass
+                              : secondaryActionClass
+                          }
+                        >
+                          {action.label}
+                        </a>
+                      )
+                    )}
                   </div>
                 </article>
               ))}
@@ -399,14 +384,6 @@ export default function TechnicalSpecsExperience() {
           </div>
         </section>
       </div>
-
-      <TechnicalDrawer
-        open={isDrawerOpen}
-        loading={isLoading}
-        titleId={titleId}
-        content={selectedSpec}
-        onClose={handleCloseDrawer}
-      />
     </main>
   );
 }

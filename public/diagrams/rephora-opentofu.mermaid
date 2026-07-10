@@ -1,0 +1,98 @@
+flowchart LR
+    admin["Cloud Admin<br/>one-time bootstrap"]
+    github["GitHub Actions<br/>infra workflow"]
+
+    subgraph repo["rephora_infra repository"]
+        direction TB
+
+        subgraph bootstrap["Tier 0 bootstrap"]
+            direction TB
+            bootDev["bootstrap/dev<br/>initial local apply"]
+            bootProd["bootstrap/prod<br/>initial local apply"]
+        end
+
+        subgraph environments["Application environments"]
+            direction LR
+            dev["environments/dev<br/>environment = dev"]
+            prod["environments/prod<br/>environment = prod"]
+        end
+
+        subgraph modules["Shared OpenTofu modules"]
+            direction LR
+            core["auth / compute / database<br/>ecr / storage"]
+            asyncOps["lambda / messaging<br/>monitoring / ses / ssm"]
+        end
+    end
+
+    subgraph state["Remote state backend per environment"]
+        direction TB
+        stateS3["AWS S3 backend<br/>rephora-infra-tfstate-env<br/>versioned state"]
+        locks["AWS DynamoDB lock table<br/>rephora-infra-tflocks-env<br/>LockID"]
+        oidc["GitHub OIDC provider<br/>AWS IAM role"]
+    end
+
+    subgraph pipeline["OpenTofu execution"]
+        direction TB
+        pr["Pull request<br/>to main"]
+        plan["tofu fmt / init / plan"]
+        merge["Merge to main"]
+        apply["tofu apply<br/>auto-approved by workflow"]
+
+        pr -->|"3 Run plan checks"| plan
+        plan -->|"4 Merge approved change"| merge
+        merge -->|"5 Start apply workflow"| apply
+    end
+
+    subgraph aws["AWS resources with -environment suffix"]
+        direction TB
+        identity["Cognito / SES"]
+        compute["EC2 / ECR / SSM"]
+        data["DynamoDB tables<br/>S3 buckets"]
+        events["SNS / SQS<br/>EventBridge / Lambda"]
+        observability["CloudWatch<br/>alarms and logs"]
+    end
+
+    admin -->|"1 Bootstrap backend foundation"| bootDev
+    admin -->|"1 Bootstrap backend foundation"| bootProd
+    bootDev --> stateS3
+    bootDev --> locks
+    bootDev --> oidc
+    bootProd --> stateS3
+    bootProd --> locks
+    bootProd --> oidc
+
+    github -->|"6 OIDC assume role"| oidc
+    github -->|"2 Open PR"| pr
+    apply -->|"8 Read / write state"| stateS3
+    apply -->|"7 Acquire / release lock"| locks
+    apply -->|"9 Select dev environment"| dev
+    apply -->|"9 Select prod environment"| prod
+
+    dev -->|"imports shared modules"| modules
+    prod -->|"imports shared modules"| modules
+    modules -->|"10 Materialize modules"| aws
+
+    classDef actor fill:#102026,stroke:#4FB7C5,stroke-width:1.4px,color:#F4F1E8
+    classDef repoNode fill:#101418,stroke:#8A7657,stroke-width:1.4px,color:#F4F1E8
+    classDef bootstrapNode fill:#17130E,stroke:#D38B5B,stroke-width:1.4px,color:#F4F1E8
+    classDef envNode fill:#101A12,stroke:#7AA66A,stroke-width:1.4px,color:#F4F1E8
+    classDef moduleNode fill:#151B20,stroke:#D9A45F,stroke-width:1.4px,color:#F4F1E8
+    classDef stateNode fill:#171322,stroke:#A98FD4,stroke-width:1.4px,color:#F4F1E8
+    classDef pipelineNode fill:#0E171C,stroke:#4FB7C5,stroke-width:1.4px,color:#F4F1E8
+    classDef awsNode fill:#151A1E,stroke:#D9A45F,stroke-width:1.4px,color:#F4F1E8
+
+    class admin,github actor
+    class bootDev,bootProd bootstrapNode
+    class dev,prod envNode
+    class core,asyncOps moduleNode
+    class stateS3,locks,oidc stateNode
+    class pr,plan,merge,apply pipelineNode
+    class identity,compute,data,events,observability awsNode
+
+    style repo fill:#070A0B,stroke:#8A7657,stroke-width:1.5px,color:#F4F1E8
+    style bootstrap fill:#17100A,stroke:#D38B5B,stroke-width:1.2px,color:#F4F1E8
+    style environments fill:#0B120D,stroke:#7AA66A,stroke-width:1.2px,color:#F4F1E8
+    style modules fill:#11161A,stroke:#D9A45F,stroke-width:1.2px,color:#F4F1E8
+    style state fill:#100D17,stroke:#A98FD4,stroke-width:1.5px,color:#F4F1E8
+    style pipeline fill:#091116,stroke:#4FB7C5,stroke-width:1.5px,color:#F4F1E8
+    style aws fill:#0F1114,stroke:#D9A45F,stroke-width:1.5px,color:#F4F1E8

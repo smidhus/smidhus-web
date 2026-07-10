@@ -1,0 +1,31 @@
+sequenceDiagram
+    autonumber
+
+    box rgba(31, 67, 77, 0.35) Rephora Mobile Client
+        participant App as Flutter App
+    end
+
+    box rgba(34, 66, 41, 0.35) Spring Boot Monolith
+        participant API as GraphQL API
+        participant SessionEnd as EndSessionUseCase
+        participant Habit as StudyHabitCalculator
+    end
+
+    box rgba(77, 57, 98, 0.22) DynamoDB
+        participant DB as DynamoDB tables
+    end
+
+    rect rgba(244, 241, 232, 0.07)
+        Note over App,DB: Synchronous completion path: the app needs the final payload for the completion screen
+        App->>API: endSession(sessionId)
+        API->>SessionEnd: Execute final session closure
+        SessionEnd->>DB: study-sessions: load active session
+        SessionEnd->>DB: users: load authenticated user
+        SessionEnd->>Habit: Calculate daily seconds, streak, and study habit
+        Habit-->>SessionEnd: StudyHabit snapshot
+        SessionEnd->>SessionEnd: Calculate duration, score, accuracy, XP, level
+        SessionEnd->>DB: user-stats: persist XP, streak, level, accuracy
+        SessionEnd->>DB: study-sessions: mark COMPLETED
+        SessionEnd-->>API: Completion payload
+        API-->>App: Final score, XP, streak, level, and study habit
+    end

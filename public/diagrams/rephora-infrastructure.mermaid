@@ -1,0 +1,99 @@
+flowchart LR
+    app["Flutter Mobile Client<br/>Rephora app"]
+
+    subgraph aws["AWS Cloud - Rephora production"]
+        direction LR
+
+        subgraph compute["Compute boundary"]
+            direction TB
+            ec2["AWS EC2<br/>Docker host"]
+            nginx["Nginx<br/>TLS reverse proxy"]
+            api["Spring Boot<br/>GraphQL API"]
+            workers["Spring Scheduler<br/>SQS consumers"]
+
+            ec2 --> nginx
+            nginx -->|"proxy /graphql"| api
+            api -->|"in-process schedules"| workers
+        end
+
+        subgraph identity["Identity and secrets"]
+            direction TB
+            cognito["AWS Cognito<br/>User Pool"]
+            jwks["JWKS public keys<br/>cached by API"]
+            ssm["AWS SSM Parameter Store<br/>runtime config"]
+
+            cognito --- jwks
+        end
+
+        subgraph messaging["Async messaging"]
+            direction TB
+            snsAI["AWS SNS<br/>ai_questions"]
+            sqsAI["AWS SQS<br/>ai_questions_queue + DLQ"]
+            snsAgg["AWS SNS<br/>update_aggregations"]
+            sqsAgg["AWS SQS<br/>update_aggregations + DLQ"]
+
+            snsAI --> sqsAI
+            snsAgg --> sqsAgg
+        end
+
+        subgraph storage["Storage and media"]
+            direction TB
+            ddb["AWS DynamoDB<br/>users / books / quizzes<br/>questions / study-sessions<br/>user-stats / jobs"]
+            publicS3["AWS S3 Public<br/>manifest + avatars<br/>Referer restricted"]
+            privateS3["AWS S3 Private<br/>future reports<br/>presigned URLs"]
+        end
+
+        subgraph ops["Operations"]
+            direction TB
+            ssmDocs["AWS SSM Documents<br/>deploy commands"]
+            eventbridge["AWS EventBridge<br/>10 min schedule"]
+            gardener["AWS Lambda<br/>rephora-gardener<br/>Python 3.12"]
+            cloudwatch["AWS CloudWatch<br/>alarms and monitoring"]
+            ses["AWS SES<br/>provisioned future email"]
+
+            eventbridge --> gardener
+        end
+    end
+
+    app -->|"HTTPS GraphQL"| nginx
+    app -->|"login / refresh"| cognito
+    cognito -. "JWT token set" .-> app
+    app -->|"assets manifest + avatars<br/>Referer header"| publicS3
+
+    api -. "verify JWT signing keys" .-> jwks
+    ssm -. "inject config" .-> api
+    ssmDocs -. "remote deploy" .-> ec2
+
+    api -->|"domain reads / writes"| ddb
+    api -->|"AI generation events"| snsAI
+    api -->|"progress aggregation events"| snsAgg
+    api -. "future report URLs" .-> privateS3
+
+    sqsAI -->|"poll jobs"| workers
+    sqsAgg -->|"poll events"| workers
+    workers -->|"questions + aggregates"| ddb
+
+    gardener -->|"deletedAt cascade purge"| ddb
+    cloudwatch -. "observe runtime, queues, Lambda" .-> compute
+    ses -. "provisioned only<br/>no active export worker" .-> api
+
+    classDef external fill:#102026,stroke:#4FB7C5,stroke-width:1.5px,color:#F4F1E8
+    classDef computeNode fill:#0E1A11,stroke:#7AA66A,stroke-width:1.5px,color:#F4F1E8
+    classDef identityNode fill:#171322,stroke:#A98FD4,stroke-width:1.5px,color:#F4F1E8
+    classDef eventNode fill:#201409,stroke:#D38B5B,stroke-width:1.5px,color:#F4F1E8
+    classDef storageNode fill:#151B20,stroke:#D9A45F,stroke-width:1.5px,color:#F4F1E8
+    classDef opsNode fill:#11130F,stroke:#8A7657,stroke-width:1.5px,color:#F4F1E8
+
+    class app external
+    class ec2,nginx,api,workers computeNode
+    class cognito,jwks,ssm identityNode
+    class snsAI,sqsAI,snsAgg,sqsAgg eventNode
+    class ddb,publicS3,privateS3 storageNode
+    class ssmDocs,eventbridge,gardener,cloudwatch,ses opsNode
+
+    style aws fill:#070A0B,stroke:#D9A45F,stroke-width:2px,color:#F4F1E8
+    style compute fill:#0B120D,stroke:#7AA66A,stroke-width:1.4px,color:#F4F1E8
+    style identity fill:#100D17,stroke:#A98FD4,stroke-width:1.4px,color:#F4F1E8
+    style messaging fill:#17100A,stroke:#D38B5B,stroke-width:1.4px,color:#F4F1E8
+    style storage fill:#11161A,stroke:#D9A45F,stroke-width:1.4px,color:#F4F1E8
+    style ops fill:#10100E,stroke:#8A7657,stroke-width:1.4px,color:#F4F1E8

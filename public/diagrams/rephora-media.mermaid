@@ -1,0 +1,40 @@
+sequenceDiagram
+    autonumber
+
+    box rgba(31, 67, 77, 0.35) Rephora Mobile Client
+        participant UI as Flutter UI
+        participant AssetManager as AssetManager
+        participant Prefs as SharedPreferences
+        participant ImageCache as CachedNetworkImage
+    end
+
+    box rgba(90, 63, 30, 0.30) Amazon S3
+        participant PublicS3 as Public assets bucket
+    end
+
+    rect rgba(244, 241, 232, 0.07)
+        Note over UI,PublicS3: Manifest sync path reuses local JSON unless S3 ETag changed
+        UI->>AssetManager: Sync assets manifest
+        AssetManager->>Prefs: Read cached manifest JSON and ETag
+        AssetManager->>PublicS3: GET assets_manifest.json with Referer and If None Match
+        Note over PublicS3: Bucket policy validates the expected Referer signature
+
+        alt Manifest unchanged
+            PublicS3-->>AssetManager: Not Modified response
+            AssetManager->>Prefs: Keep cached manifest JSON
+        else First load or manifest changed
+            PublicS3-->>AssetManager: OK response with manifest JSON and ETag
+            AssetManager->>Prefs: Store manifest JSON and ETag
+        end
+    end
+
+    rect rgba(224, 169, 109, 0.08)
+        Note over UI,PublicS3: Avatar path downloads directly from public S3 with anti hotlinking header
+        UI->>ImageCache: Render avatar URL from manifest or profile metadata
+        ImageCache->>PublicS3: GET avatar image with Referer
+        Note over PublicS3: Same Referer policy protects avatar reads from casual hotlinking
+        PublicS3-->>ImageCache: Stream image bytes
+        ImageCache-->>UI: Render cached avatar
+    end
+
+    Note over PublicS3: Private reports bucket is separate and used for presigned artifacts, not avatar delivery

@@ -1,0 +1,53 @@
+sequenceDiagram
+    autonumber
+
+    box rgba(79, 183, 197, 0.10) Rephora Mobile Client
+        participant app as Flutter App
+        participant cache as Secure Token Cache
+    end
+
+    box rgba(217, 164, 95, 0.10) AWS Cognito Identity
+        participant pool as Cognito User Pool
+        participant jwks as JWKS Public Keys
+    end
+
+    box rgba(122, 166, 106, 0.10) Spring Boot Resource Server
+        participant api as GraphQL API
+        participant filter as JWT Verification Filter
+        participant validator as TokenUseValidator
+        participant extractor as CognitoJwtExtractor
+        participant resolver as GraphQL Resolver / Use Case
+    end
+
+    rect rgba(79, 183, 197, 0.06)
+        Note over app,pool: Authentication loop
+        app->>pool: Send login credentials
+        pool-->>app: Issue access, ID, and refresh tokens
+        app->>cache: Store token set securely
+    end
+
+    rect rgba(122, 166, 106, 0.06)
+        Note over app,resolver: Authorized GraphQL request
+        app->>cache: Read access token
+        cache-->>app: Return cached access token
+        app->>api: GraphQL request with Bearer access token
+        api->>filter: Delegate JWT authentication
+        filter->>jwks: Fetch/cache Cognito public keys
+        jwks-->>filter: Return signing keys
+        filter->>filter: Verify signature, issuer, and expiry
+        filter->>validator: Validate token_use claim
+        validator-->>filter: Accept only access tokens
+        filter->>extractor: Forward verified access JWT
+        extractor->>resolver: Extract sub claim as user identity
+        resolver-->>api: Execute use case and return data
+        api-->>app: Return GraphQL payload
+    end
+
+    alt Access token expired or API returns 401
+        app->>cache: Read refresh token
+        cache-->>app: Return refresh token
+        app->>pool: Request fresh access token
+        pool-->>app: Issue new access token
+        app->>cache: Update secure token cache
+        app->>api: Replay original request with fresh bearer token
+    end

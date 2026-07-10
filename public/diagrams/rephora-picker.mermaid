@@ -1,0 +1,18 @@
+flowchart LR
+    request["Flutter App<br/>nextQuestion(userId, quizId)"]
+    candidates["GraphQL API + DynamoDB<br/>load up to 100 active questions<br/>scope: userId + quizId"]
+    policy["QuestionPickPolicy<br/>in-memory exponential race<br/><br/>mastery = scoreSum / (attempts * 10)<br/>weight = 0.05 + (1 - mastery)^1.5<br/>R = -ln(U)<br/>pickKey = R / weight<br/><br/>no materialized pick-index GSI"]
+    selected["Select minimum pickKey<br/>probability proportional to weight"]
+    response["GraphQL response<br/>selected review question"]
+
+    request --> candidates --> policy --> selected --> response
+
+    classDef mobileNode fill:#102026,stroke:#4FB7C5,color:#F4F1E8
+    classDef apiNode fill:#111A13,stroke:#7AA66A,color:#F4F1E8
+    classDef algorithmNode fill:#151A1E,stroke:#D9A45F,color:#F4F1E8
+    classDef resultNode fill:#16141C,stroke:#A98FD4,color:#F4F1E8
+
+    class request,response mobileNode
+    class candidates apiNode
+    class policy algorithmNode
+    class selected resultNode

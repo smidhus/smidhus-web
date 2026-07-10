@@ -1,0 +1,39 @@
+flowchart TB
+    subgraph accountLane["Account lifecycle and asynchronous work"]
+        direction LR
+        accountCap["Backend capability<br/><br/>user identity<br/>account deletion<br/>AI job status"]
+        accountPattern["Access pattern<br/><br/>lookup by id, email, username<br/>scan deletedAt users for Gardener<br/>track jobs by userId/entityId + createdAt"]
+        accountTables["DynamoDB table / index<br/><br/>users<br/>PK id<br/>GSI email, username, deletedAt<br/><br/>jobs<br/>PK id<br/>GSI userId + createdAt<br/>GSI entityId + createdAt"]
+    end
+
+    subgraph learningLane["Study catalog and flashcards"]
+        direction LR
+        learningCap["Backend capability<br/><br/>book library<br/>quiz catalog<br/>question retrieval"]
+        learningPattern["Access pattern<br/><br/>list books/quizzes by userId + createdAt<br/>list quizzes by bookId + createdAt<br/>fetch questions with userQuiz = userId#quizId"]
+        learningTables["DynamoDB table / index<br/><br/>books<br/>PK id, GSI userId + createdAt, deletedAt<br/><br/>quizzes<br/>PK id, GSI userId + createdAt<br/>GSI bookId + createdAt, deletedAt<br/><br/>questions<br/>PK userQuiz, SK id<br/>GSI id, userId + createdAt, deletedAt"]
+    end
+
+    subgraph progressLane["Practice progress and engagement"]
+        direction LR
+        progressCap["Backend capability<br/><br/>study history<br/>aggregate stats<br/>reminders and rankings"]
+        progressPattern["Access pattern<br/><br/>read sessions by userId + createdAt<br/>rank XP, streak, efficiency, accuracy<br/>query reminders by bucket + time"]
+        progressTables["DynamoDB table / index<br/><br/>study-sessions<br/>PK userId, SK createdAt<br/><br/>user-stats<br/>PK userId<br/>GSI XP, streak, efficiency, accuracy<br/>GSI reminder bucket + time"]
+    end
+
+    accountCap --> accountPattern --> accountTables
+    learningCap --> learningPattern --> learningTables
+    progressCap --> progressPattern --> progressTables
+    accountTables ~~~ learningCap
+    learningTables ~~~ progressCap
+
+    classDef springNode fill:#111A13,stroke:#7AA66A,color:#F4F1E8
+    classDef platformNode fill:#16141C,stroke:#A98FD4,color:#F4F1E8
+    classDef contentNode fill:#101820,stroke:#4FB7C5,color:#F4F1E8
+    classDef activityNode fill:#17130E,stroke:#D9A45F,color:#F4F1E8
+    classDef patternNode fill:#151A1E,stroke:#8A7657,color:#F4F1E8
+
+    class accountCap,learningCap,progressCap springNode
+    class accountPattern,learningPattern,progressPattern patternNode
+    class accountTables platformNode
+    class learningTables contentNode
+    class progressTables activityNode

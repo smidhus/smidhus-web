@@ -13,6 +13,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: "FORGE", href: "/#forge-output" },
   { label: "CRAFT", href: "/#core-craft" },
+  { label: "LOGS", href: "/forge-logs" },
   { label: "COMMS", href: "/#comms" },
 ];
 
